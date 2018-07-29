@@ -89,10 +89,7 @@ public class GenUtilities {
 		return exception;
 	}
 
-	public static ResponseEntity<?> GetErrorResponseEntity(String errorMsg) {
-		return ResponseEntity.badRequest().body(errorMsg);
-	}
-
+	
 	
 	public static String generateHash(String toHash) {
 		MessageDigest md = null;

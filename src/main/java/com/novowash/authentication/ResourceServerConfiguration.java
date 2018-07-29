@@ -21,9 +21,9 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http.
-		anonymous().disable()
-		.requestMatchers()
-		.and().authorizeRequests()
+		anonymous().and()
+		.authorizeRequests()
+		.antMatchers("/signup").permitAll()
 		.anyRequest().authenticated()
 		.and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
 	}

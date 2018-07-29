@@ -15,6 +15,7 @@ public class User extends BaseDto implements Serializable{
 	private String mobileNo;
 	private int status;
 	private String token;
+	private long OTP;
 	
 	public int getStatus() {
 		return status;
@@ -132,7 +133,15 @@ public class User extends BaseDto implements Serializable{
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + name + ", address=" + address
-				+ ", email=" + email + "]";
+				+ ", email=" + email + "OTP="+OTP+"]";
+	}
+
+	public long getOTP() {
+		return OTP;
+	}
+
+	public void setOTP(long oTP) {
+		OTP = oTP;
 	}
 	
 }

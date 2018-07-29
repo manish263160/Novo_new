@@ -12,7 +12,8 @@ public enum RESPONSE_CODES {
 	EMPTY_REQUEST_BODY(1002,"Request Body is empty", "Please try again!"),
 	INVALID_USER_AUTH_KEY(1003,"",""),
 	DAO_EXCEPTION(1004,"FAIL","JDBC Exception"),
-	SUCCESS(200,"SUCCESS","Success");
+	SUCCESS(200,"SUCCESS","Success"),
+	USER_EXIST(1005,"USER_EXIST" , "User already exist");
 	//EMPTY_REQUEST_BODY
 	
 	private final int code;

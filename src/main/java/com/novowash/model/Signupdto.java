@@ -13,7 +13,7 @@ public class Signupdto implements Serializable {
 	 */
 	private static final long serialVersionUID = -5884247800780900960L;
 
-	@Pattern(regexp="(^$|[0-9]{10})")
+	@Pattern(regexp="(^$|[0-9]{10})" , message ="not matching with phone number")
 	@NotBlank(message = "Task mobile must not be blank!")
 	private String mobileNo;
 	
