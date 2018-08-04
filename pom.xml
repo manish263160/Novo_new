@@ -108,7 +108,7 @@
 	</properties>
 
 	<build>
-	<finalName>novo-boot</finalName>
+	<finalName>NovoWash</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
