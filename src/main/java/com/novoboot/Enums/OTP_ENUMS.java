@@ -9,7 +9,7 @@ public enum OTP_ENUMS {
 	CONTENT_TYPE("Content-Type") , // use this: application/x-www-form-urlencoded 
 	OTP_MESSAGE("your login otp is ##OTP##"),
 	SENDER("NOVOWASH"),
-	OTP_SENT_SUCCESSFUL("OTP_SENT_SUCCESSFUL"),
+	OTP_SENT_SUCCESSFUL("OTP_SENT_SUCCESSFULLY"),
 	OTP_SEND_FAIL("OTP_SEND_FAIL"),
 	OTP_VLID_DURATION("Otp is valid only for 2 minuts"),
 	//these are the otp verification message
