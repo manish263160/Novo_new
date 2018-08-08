@@ -23,7 +23,7 @@ import org.springframework.stereotype.Repository;
 
 import com.novoboot.Enums.CommonEnums;
 import com.novoboot.Enums.CommonEnums.STATUS;
-import com.novoboot.dao.UserServicesDao;
+import com.novoboot.dao.ServicesDao;
 import com.novoboot.jdbcTemplate.NovoJdbcTemplate;
 import com.novoboot.model.ServiceModel;
 import com.novoboot.model.ServiceCategory;
@@ -31,9 +31,9 @@ import com.novoboot.model.ServiceCost;
 import com.novoboot.model.ServiceEnquire;
 
 @Repository
-public class UserServicesDaoImpl extends NovoJdbcTemplate implements UserServicesDao {
+public class ServicesDaoImpl extends NovoJdbcTemplate implements ServicesDao {
 
-	private static final Logger logger = Logger.getLogger(UserServicesDaoImpl.class);
+	private static final Logger logger = Logger.getLogger(ServicesDaoImpl.class);
 	
 	private static final String GET_ALL_SERVICE_CAT = "select * from service_cat_m where status = ?";
 

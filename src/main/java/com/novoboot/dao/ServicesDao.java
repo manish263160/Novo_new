@@ -7,7 +7,7 @@ import com.novoboot.model.ServiceCategory;
 import com.novoboot.model.ServiceCost;
 import com.novoboot.model.ServiceEnquire;
 
-public interface UserServicesDao {
+public interface ServicesDao {
 	
 	public List<ServiceCategory> getAllServicesDetails();
 	

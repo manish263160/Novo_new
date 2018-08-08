@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novoboot.Enums.CommonEnums;
-import com.novoboot.dao.UserServicesDao;
+import com.novoboot.dao.ServicesDao;
 import com.novoboot.model.Mail;
 import com.novoboot.model.ServiceCategory;
 import com.novoboot.model.ServiceCost;
@@ -29,13 +29,13 @@ import com.novoboot.model.ServiceModel;
 
 
 @Service
-public class UserServices {
+public class ServicesImpl {
 
-	@Autowired private UserServicesDao servicesDao;
+	@Autowired private ServicesDao servicesDao;
 	@Autowired private VelocityEmailTemplateService velocityService;
 	@Autowired private MailerService mailerService;
 	
-	private static final Logger logger = Logger.getLogger(UserServices.class);
+	private static final Logger logger = Logger.getLogger(ServicesImpl.class);
 	
 	@Value("${sms.url}")
 	private String smsServiceUrl;

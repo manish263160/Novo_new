@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,9 +17,13 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.novoboot.Enums.CommonEnums;
+import com.novoboot.Enums.OTP_ENUMS;
 import com.novoboot.model.User;
+import com.novoboot.service.LoginServices;
 import com.novoboot.service.UserService;
+import com.novoboot.utils.LoginUtils;
 
 
 
@@ -37,6 +42,8 @@ public class NovoAuthenticationProvider implements AuthenticationProvider {
 	
 	@Autowired UserService userService;
 	
+	@Autowired
+	LoginServices loginServices;
 	/* (non-Javadoc)
 	 * @see org.springframework.security.authentication.AuthenticationProvider#authenticate(org.springframework.security.core.Authentication)
 	 */
@@ -45,15 +52,32 @@ public class NovoAuthenticationProvider implements AuthenticationProvider {
 			logger.debug( "ImageVideoAuthenticationProvider.authenticate() authentication.getPrincipal(): " + authentication.getPrincipal());
 			logger.debug( "ImageVideoAuthenticationProvider.authenticate() authentication.getCredentials(): " + authentication.getCredentials());
 			
-			String userName = authentication.getPrincipal().toString();
-			String password = authentication.getCredentials().toString();
+			String mobileNo = authentication.getPrincipal().toString();
+			String otp = authentication.getCredentials().toString();
 			
-			User user = userService.findUserByMobile(userName);
+			ResponseEntity<String> responseEntity = loginServices.verifyOtp(mobileNo,otp);
 
-			if (user == null) {
-				throw new UsernameNotFoundException(String.format(URLEncoder.encode("Invalid Email OR password", "UTF-8"), authentication.getPrincipal()));
+			JsonNode jsonObj = LoginUtils.gebericResponseConvert(responseEntity);
+
+			String getmessageFromJsonObj = jsonObj.get("message").asText();
+			
+			String getTypeFromJsonObj = jsonObj.get("type").asText();
+			
+			if (getmessageFromJsonObj.equalsIgnoreCase(OTP_ENUMS.INVALID_OTP.getKey())
+					|| getmessageFromJsonObj.equalsIgnoreCase(OTP_ENUMS.MOBILE_NOT_FOUND.getKey())) {
+
+				throw new RuntimeException(String.format(URLEncoder.encode(OTP_ENUMS.INVALID_OTP.getKey(), "UTF-8"), authentication.getPrincipal()));
 			}
 			
+			else if (getmessageFromJsonObj.equalsIgnoreCase(OTP_ENUMS.NUMBER_VERIFIED_SUCCESSFULLY.getKey()) || getmessageFromJsonObj.equalsIgnoreCase(OTP_ENUMS.ALREADY_VERIFIED.getKey())) {
+
+				User user = userService.findUserByMobile(mobileNo);
+				
+				if (user == null) {
+					throw new UsernameNotFoundException(String.format(
+							URLEncoder.encode("Invalid Email OR password", "UTF-8"), authentication.getPrincipal()));
+				}
+
 			if (CommonEnums.STATUS.INACTIVE.ID == user.getStatus()) {
 				throw new UsernameNotFoundException(String.format(URLEncoder.encode("You are not active", "UTF-8"), authentication.getPrincipal()));
 			}
@@ -73,8 +97,11 @@ public class NovoAuthenticationProvider implements AuthenticationProvider {
 	                grantList.add(authority);
 	            }
 	        }  
-			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user, password, grantList);
-			return token;
+	        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user, otp, grantList);
+	        return token;
+			}
+			
+			return null;
 		} catch (Exception e) {
 			logger.error( "Error in ImageVideoAuthenticationProvider.authenticate()", e);
 			throw new AuthenticationServiceException(e.getMessage());

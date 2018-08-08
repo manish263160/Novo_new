@@ -49,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .anonymous().disable()
                 .authorizeRequests()
-                .antMatchers("/signup/**").permitAll();
+                .antMatchers("/signup/**").permitAll().antMatchers("/login/**").permitAll();
     }
 
     @Bean

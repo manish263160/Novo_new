@@ -34,6 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
@@ -51,6 +52,7 @@ public class GenUtilities {
 	private static Cipher cipher;
 	private static SecretKey secretKey;
 
+	
 	public static ResponseObject getSuccessResponseObject(Object obj) {
 		ResponseObject responseObject = new ResponseObject();
 		responseObject.setData(obj);
@@ -65,6 +67,16 @@ public class GenUtilities {
 		responseObject.setStatus(RESPONSE_CODES.SUCCESS.getDescription());
 		responseObject.setStatusCode(successCode);
 		responseObject.setMessage(message);
+		return responseObject;
+	}
+	
+	public static ResponseObject getSuccessResponseObject(Object obj, String message, int successCode , String desc) {
+		ResponseObject responseObject = new ResponseObject();
+		responseObject.setData(obj);
+		responseObject.setStatus(RESPONSE_CODES.SUCCESS.getDescription());
+		responseObject.setStatusCode(successCode);
+		responseObject.setMessage(message);
+		responseObject.setDescription(desc);
 		return responseObject;
 	}
 

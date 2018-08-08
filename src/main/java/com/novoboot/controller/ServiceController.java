@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.novoboot.Enums.RESPONSE_CODES;
 import com.novoboot.model.ResponseObject;
 import com.novoboot.model.ServiceEnquire;
-import com.novoboot.service.UserServices;
+import com.novoboot.service.ServicesImpl;
 import com.novoboot.utils.GenUtilities;
 
 @RestController
 @PreAuthorize ("hasRole('USER')")
 @RequestMapping(value = "/services")
-public class UserServiceController {
+public class ServiceController {
 
 	@Autowired
-	private UserServices services;
+	private ServicesImpl services;
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/serviceDetails")
 	public ResponseObject getAllServicesDetails() {
