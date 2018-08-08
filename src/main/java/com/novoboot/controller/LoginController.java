@@ -59,7 +59,7 @@ public class LoginController {
 			
 			String getmessageFromJsonObj = jsonObj.get("message").asText();
 			String gettypeFromJsonObj = jsonObj.get("type").asText();
-			if (RESPONSE_CODES.SUCCESS.getDescription().equalsIgnoreCase(gettypeFromJsonObj) && OTP_ENUMS.OTP_SENT_SUCCESSFUL.getKey().equalsIgnoreCase(getmessageFromJsonObj))
+			if (RESPONSE_CODES.SUCCESS.getDescription().equalsIgnoreCase(gettypeFromJsonObj))
 				return GenUtilities.getSuccessResponseObject(OTP_ENUMS.OTP_SENT_SUCCESSFUL.getKey(),getmessageFromJsonObj,
 																RESPONSE_CODES.SUCCESS.getCode(), OTP_ENUMS.OTP_VLID_DURATION.getKey());
 			else
