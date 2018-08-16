@@ -54,7 +54,7 @@ public class HelloWorldRestController {
      
     //-------------------Create a User--------------------------------------------------------
      
-    @RequestMapping(value = "/user/", method = RequestMethod.POST)
+  /*  @RequestMapping(value = "/user/", method = RequestMethod.POST)
     public ResponseEntity<Void> createUser(@RequestBody User user,    UriComponentsBuilder ucBuilder) {
  
         if (userService.isUserExist(user)) {
@@ -65,7 +65,7 @@ public class HelloWorldRestController {
  
         HttpHeaders headers = new HttpHeaders();
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
-    }
+    }*/
  
     
      

@@ -25,4 +25,6 @@ public boolean isUserExist(User user);
 User getUserByUserName(String userName, String password);
 
 List<String> getUserRoles(Long userId);
+
+void insertUserRole(long id);
 }

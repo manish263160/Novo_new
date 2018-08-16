@@ -42,7 +42,7 @@ public class CommonEnums {
 	}
 
 	public enum USER_TYPE {
-		SUPER_ADMIN(1), FRANCHISEE(2), USER(3);
+		ADMIN(1), USER(2);
 
 		public int ID;
 
@@ -52,7 +52,8 @@ public class CommonEnums {
 	}
 
 	public enum UserRoleType implements Serializable {
-		SUPERADMIN("SUPERADMIN"), ADMIN("ADMIN"), USER("USER"), FRANCHISEE("RESTORENT");
+		SUPERADMIN("SUPERADMIN"), ADMIN("ADMIN"), USER("USER"), FRANCHISEE("RESTORENT"),
+		ADMIN_ID("1") , USER_ID("2");
 
 		String userProfileType;
 

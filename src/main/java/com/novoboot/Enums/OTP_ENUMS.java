@@ -16,6 +16,8 @@ public enum OTP_ENUMS {
 	NUMBER_VERIFIED_SUCCESSFULLY("number_verified_successfully"),
 	INVALID_OTP("invalid_otp"),
 	MOBILE_NOT_FOUND("mobile_not_found"),
+	OTP_VERIFIED("otp_verified"),
+	OTP_NOT_VERIFIED("otp_not_verified"),
 	ALREADY_VERIFIED("already_verified"),
 	
 	;

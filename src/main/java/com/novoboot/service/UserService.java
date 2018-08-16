@@ -9,9 +9,9 @@ public interface UserService {
 	
 	User findById(long id);
 	
-	User findUserByMobile(String name);
+	User findUserByMobile(String mobileNo);
 	
-	void saveUser(User user);
+	boolean saveUser(String mobileNo) throws Exception;
 	
 	void updateUser(User user);
 	

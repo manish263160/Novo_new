@@ -10,9 +10,22 @@ public class NovoWashException extends Exception {
 	
 	private String status;
 	private int statusCode; 
-	private String description;
+//	private String description;
 	private String message;
 
+	/**
+	 * This is the constructor for NovowashException class 
+	 * @param status
+	 * @param statusCode
+	 * @param description
+	 * @param message
+	 */
+	public NovoWashException(String status,int statusCode ,  String message) {
+		this.status= status;
+		this.statusCode = statusCode;
+		this.message = message;
+		
+	}
 	/**
 	 * @return the status
 	 */
@@ -37,18 +50,7 @@ public class NovoWashException extends Exception {
 	public void setStatusCode(int statusCode) {
 		this.statusCode = statusCode;
 	}
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
-	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
+	
 	/**
 	 * @return the message
 	 */

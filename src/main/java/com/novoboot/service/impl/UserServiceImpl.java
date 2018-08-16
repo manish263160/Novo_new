@@ -2,11 +2,18 @@ package com.novoboot.service.impl;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.novoboot.Enums.BASIC_STRINGS;
+import com.novoboot.Enums.CommonEnums.STATUS;
 import com.novoboot.dao.UserDao;
+import com.novoboot.dao.impl.UserAuthDaoImpl;
 import com.novoboot.model.User;
 import com.novoboot.service.UserAuthService;
 import com.novoboot.service.UserService;
@@ -14,6 +21,7 @@ import com.novoboot.service.UserService;
 @Service("userService")
 public class UserServiceImpl implements UserService {
 
+	private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
 	@Autowired	private UserDao userDao;
 	@Autowired private UserAuthService userAuthService;
 
@@ -32,9 +40,28 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void saveUser(User user) {
-		// TODO Auto-generated method stub
-
+	@Transactional
+	public boolean saveUser(String mobileNo) throws Exception{
+		
+		try {
+			User usr= new User();
+			usr.setMobileNo(mobileNo);
+			usr.setName(BASIC_STRINGS.DEFAULT_USER.getStringName());
+			usr.setStatus(STATUS.ACTIVE.ID);
+			userDao.saveUser(usr);
+			
+			/**
+			 * This part of vode with insert the user role in DB
+			 */
+			userDao.insertUserRole(usr.getId());
+			return true;
+		} catch (DataAccessException e) {
+			logger.error("DataAccessException and roleback ="+e.getMessage());
+		}
+		catch (Exception e) {
+			logger.error("Exception ===="+e.getMessage());
+		}
+		return false;
 	}
 
 	@Override

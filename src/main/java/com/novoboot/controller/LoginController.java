@@ -12,10 +12,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.novoboot.Enums.CommonEnums;
+import com.novoboot.Enums.CommonEnums.STATUS;
 import com.novoboot.Enums.OTP_ENUMS;
 import com.novoboot.Enums.RESPONSE_CODES;
 import com.novoboot.model.ResponseObject;
+import com.novoboot.model.User;
 import com.novoboot.service.LoginServices;
+import com.novoboot.service.UserService;
 import com.novoboot.utils.GenUtilities;
 import com.novoboot.utils.LoginUtils;
 
@@ -28,6 +32,8 @@ public class LoginController {
 	@Autowired
 	LoginServices loginServices;
 
+	@Autowired
+	UserService userService;
 	/**
 	 * This method id for get the OPT for new user.
 	 */

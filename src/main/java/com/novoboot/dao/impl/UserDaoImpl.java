@@ -1,13 +1,23 @@
 package com.novoboot.dao.impl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import com.novoboot.Enums.BASIC_STRINGS;
+import com.novoboot.Enums.CommonEnums.STATUS;
+import com.novoboot.Enums.CommonEnums.USER_TYPE;
+import com.novoboot.Enums.CommonEnums.UserRoleType;
 import com.novoboot.dao.UserDao;
 import com.novoboot.jdbcTemplate.NovoJdbcTemplate;
 import com.novoboot.model.User;
@@ -18,7 +28,13 @@ public class UserDaoImpl extends NovoJdbcTemplate implements UserDao{
 
 	private static final String GET_USER = "select * from user where email = ? or mobile_no= ? and password = ?";
 	private static final String GET_USER_BY_MOBILE = "select * from user where mobile_no = ? ";
-
+	private static final String INSERT_SQL = "INSERT INTO user" + 
+												"( mobile_no," + 
+												"name," + 
+												"status," + 
+												"created_by )" + 
+												"VALUES" + 
+												"(?,?,?,?); ";
 	
 
 	@Override
@@ -39,6 +55,22 @@ public class UserDaoImpl extends NovoJdbcTemplate implements UserDao{
 	@Override
 	public void saveUser(User user) {
 
+		logger.debug("Start saveUser");
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		getJdbcTemplate().update(new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+				PreparedStatement pstmt = connection.prepareStatement(INSERT_SQL, PreparedStatement.RETURN_GENERATED_KEYS);
+				int index = 1;
+				pstmt.setString(index++, user.getMobileNo());
+				pstmt.setString(index++, user.getName());
+				pstmt.setInt(index++, STATUS.ACTIVE.ID);
+				pstmt.setString(index++,BASIC_STRINGS.SYSTEM.getStringName() );
+
+				return pstmt;
+			}
+		}, keyHolder);
+		user.setId(keyHolder.getKey().longValue());
 	}
 
 	@Override
@@ -95,6 +127,13 @@ public class UserDaoImpl extends NovoJdbcTemplate implements UserDao{
 			logger.error("No role found" + e);
 		}
 		return userRoles;
+	}
+
+	@Override
+	public void insertUserRole(long id) {
+		String sql= "insert into user_roles(user_id , role_id) values (?,?)";
+		int updt=getJdbcTemplate().update(sql, new Object[] {id, USER_TYPE.USER.ID});
+		
 	}
 
 }

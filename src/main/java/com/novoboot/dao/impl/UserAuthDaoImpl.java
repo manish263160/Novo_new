@@ -37,7 +37,7 @@ public class UserAuthDaoImpl extends NovoJdbcTemplate implements UserAuthDao {
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-				PreparedStatement pstmt = connection.prepareStatement(CREATE_USER_AUTH);
+				PreparedStatement pstmt = connection.prepareStatement(CREATE_USER_AUTH , PreparedStatement.RETURN_GENERATED_KEYS);
 				int index = 1;
 
 				pstmt.setLong(index++, userAuth.getUserId());
