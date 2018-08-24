@@ -41,7 +41,7 @@ public class ServicesDaoImpl extends NovoJdbcTemplate implements ServicesDao {
 
 	private static final String GET_SERVICES_COST = "select * from service_cost where status = ? and service_id=? order by price";
 
-	private static final String BOOK_SERVICE_SQL = "insert into service_enquire(service_id,service_cost_id,service_date,house,landmark,locality,name,phone,email,status,created_on,created_by) "
+	private static final String BOOK_SERVICE_SQL = "insert into booking_details(service_id,service_cost_id,service_date,house,landmark,locality,name,phone,email,status,created_on,created_by) "
 			+ "						values(?,?,?,?,?,?,?,?,?,?,now(),?)";
 	
 	private static final String ALL_SERVICES = "select scm.id ,scm.cat_name,scm.cat_desc,scm.image_url cat_image_url, " +

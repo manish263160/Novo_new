@@ -1,0 +1,120 @@
+package com.novoboot.security;
+
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import com.novoboot.Enums.CommonEnums;
+import com.novoboot.model.User;
+import com.novoboot.service.LoginServices;
+import com.novoboot.service.UserService;
+
+@Service("customUserDetailsService")
+public class CustomUserDetailsService implements UserDetailsService {
+
+	private static final Logger logger = Logger.getLogger(CustomUserDetailsService.class);
+	@Autowired
+	UserService userService;
+
+	@Autowired
+	LoginServices loginServices;
+	
+	@Autowired
+	public CustomUserDetailsService(UserService userService) {
+		this.userService = userService;
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String mobileNo) throws UsernameNotFoundException {
+		
+		User user = userService.findUserByMobile(mobileNo);
+		if (user == null) {
+			throw new UsernameNotFoundException(String.format("User %s does not exist!", mobileNo));
+		}
+		return new UserRepositoryUserDetails(user);
+	}
+
+	private final static class UserRepositoryUserDetails extends User implements UserDetails {
+
+		private static final long serialVersionUID = 1L;
+		private User user;
+		
+		@Autowired
+		UserService userService;
+
+		private UserRepositoryUserDetails(User user) {
+			this.user=user;
+		}
+
+		@Override
+		public Collection<? extends GrantedAuthority> getAuthorities() {
+			try {
+			List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
+			if (user != null && CommonEnums.STATUS.INACTIVE.ID == user.getStatus()) {
+				throw new UsernameNotFoundException(String.format(
+						URLEncoder.encode("You are not active", "UTF-8"), user.getMobileNo()));
+			}
+
+			if (user != null && CommonEnums.STATUS.BLOCK.ID == user.getStatus()) {
+				throw new UsernameNotFoundException(
+						String.format(URLEncoder.encode("You are blocked. Please contact admin", "UTF-8"),
+								user.getMobileNo()));
+			}
+			List<String> roles = null;
+			if (user != null) {
+				roles = userService.getUserRoles(user.getId());
+			}
+			if (roles != null) {
+				for (String role : roles) {
+					// ROLE_USER, ROLE_ADMIN,..
+					GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
+					grantList.add(authority);
+				}
+			}
+			return grantList;
+			}catch (Exception e) {
+				logger.error("Error===", e);
+				throw new AuthenticationServiceException(e.getMessage());
+			}
+			
+		}
+
+		@Override
+		public String getUsername() {
+			return null;
+		}
+
+		@Override
+		public boolean isAccountNonExpired() {
+			return true;
+		}
+
+		@Override
+		public boolean isAccountNonLocked() {
+			return true;
+		}
+
+		@Override
+		public boolean isCredentialsNonExpired() {
+			return true;
+		}
+
+		@Override
+		public boolean isEnabled() {
+			return true;
+		}
+
+	}
+
+}

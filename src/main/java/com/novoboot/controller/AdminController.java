@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.novoboot.Enums.RESPONSE_CODES;
 import com.novoboot.model.BookingDetails;
 import com.novoboot.model.ResponseObject;
-import com.novoboot.service.BookingDetailsService;
+import com.novoboot.service.BookingService;
 import com.novoboot.utils.GenUtilities;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 
-@RequestMapping(value = "/booking")
-public class BookingController {
+@PreAuthorize ("hasRole('ADMIN')")
+@RequestMapping(value = "/admin")
+public class AdminController {
 	
-	@Autowired private BookingDetailsService bookingservice;
+	@Autowired private BookingService bookingservice;
 
-	@PreAuthorize ("hasRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.GET, value = "/getAll")
 	private ResponseObject getAllBookingDetails() {
 		  List<BookingDetails> obj =bookingservice.getAllBooking();

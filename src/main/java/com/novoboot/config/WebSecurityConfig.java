@@ -1,5 +1,7 @@
 package com.novoboot.config;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +13,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -24,8 +27,8 @@ import com.novoboot.security.NovoAuthenticationProvider;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-  /*  @Resource(name = "userService")
-    private UserDetailsService userDetailsService;*/
+    @Resource(name = "customUserDetailsService")
+    private UserDetailsService userDetailsService;
 
     @Autowired
 	NovoAuthenticationProvider novoAuthenticationProvider;
@@ -38,8 +41,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {
-       /* auth.userDetailsService(userDetailsService)
-                .passwordEncoder(encoder());*/
+        auth.userDetailsService(userDetailsService)
+                .passwordEncoder(encoder());
     	auth.authenticationProvider(novoAuthenticationProvider);
     }
 
@@ -49,7 +52,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .anonymous().disable()
                 .authorizeRequests()
-                .antMatchers("/signup/**").permitAll().antMatchers("/login/**").permitAll();
+                .antMatchers("/signup/**").permitAll()
+                .antMatchers("/login/**").permitAll()
+                .antMatchers("/services/**","/partner/**").permitAll()                
+                .anyRequest().authenticated();
     }
 
     @Bean

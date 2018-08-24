@@ -1,4 +1,4 @@
-package com.novoboot.service;
+package com.novoboot.service.impl;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -18,24 +18,33 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novoboot.Enums.CommonEnums;
+import com.novoboot.dao.BookingDetailsDao;
 import com.novoboot.dao.ServicesDao;
+import com.novoboot.model.BookingDetails;
 import com.novoboot.model.Mail;
 import com.novoboot.model.ServiceCategory;
 import com.novoboot.model.ServiceCost;
 import com.novoboot.model.ServiceEnquire;
 import com.novoboot.model.ServiceModel;
+import com.novoboot.service.BookingService;
+import com.novoboot.service.MailerService;
+import com.novoboot.service.VelocityEmailTemplateService;
 
 
 
 
 @Service
-public class ServicesImpl {
+public class BookingServicesImpl implements BookingService{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7044444829085541776L;
 	@Autowired private ServicesDao servicesDao;
 	@Autowired private VelocityEmailTemplateService velocityService;
 	@Autowired private MailerService mailerService;
 	
-	private static final Logger logger = Logger.getLogger(ServicesImpl.class);
+	private static final Logger logger = Logger.getLogger(BookingServicesImpl.class);
 	
 	@Value("${sms.url}")
 	private String smsServiceUrl;
@@ -168,6 +177,13 @@ public class ServicesImpl {
 				mailerService.sendEmail(mail);
 			}
 		}
+	}
+	
+@Autowired private BookingDetailsDao bookingDao;
+	
+	public List<BookingDetails> getAllBooking() {
+		return bookingDao.getAllBooking();
+		
 	}
 	
 	/*public static URI appendUri(String uri, String appendQuery) throws URISyntaxException {

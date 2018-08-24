@@ -38,6 +38,16 @@ public class User extends BaseDto implements Serializable{
 		this.email = email;
 	}
 
+	public User(User user) {
+
+		super();
+		this.id = user.getId();
+		this.name = user.getName();
+		this.address = user.getAddress();
+		this.password = user.getPassword();
+		this.email = user.getEmail();
+	}
+
 	/**
 	 * @return the id
 	 */

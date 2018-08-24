@@ -84,6 +84,8 @@ public class NovoAuthenticationProvider implements AuthenticationProvider {
 					|| getmessageFromJsonObj.equalsIgnoreCase(OTP_ENUMS.ALREADY_VERIFIED.getKey())) {
 
 				User user = userService.findUserByMobile(mobileNo);
+				user.setMobileNo(mobileNo);
+				user.setOTP(Long.parseLong(otp));
 
 				if (user == null) {
 
