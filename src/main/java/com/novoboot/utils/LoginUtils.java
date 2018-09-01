@@ -106,7 +106,7 @@ public class LoginUtils {
 		return response;
 	}
 	
-	public static JsonNode gebericResponseConvert(ResponseEntity<String> responseEntity) {
+	public static JsonNode genericResponseConvert(ResponseEntity<String> responseEntity) {
 		String getBody = responseEntity.getBody();
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode jsonObj = null;

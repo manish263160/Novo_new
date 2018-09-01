@@ -67,7 +67,7 @@ public class NovoAuthenticationProvider implements AuthenticationProvider {
 
 			ResponseEntity<String> responseEntity = loginServices.verifyOtp(mobileNo, otp);
 
-			JsonNode jsonObj = LoginUtils.gebericResponseConvert(responseEntity);
+			JsonNode jsonObj = LoginUtils.genericResponseConvert(responseEntity);
 
 			String getmessageFromJsonObj = jsonObj.get("message").asText();
 
@@ -85,7 +85,7 @@ public class NovoAuthenticationProvider implements AuthenticationProvider {
 
 				User user = userService.findUserByMobile(mobileNo);
 				user.setMobileNo(mobileNo);
-				user.setOTP(Long.parseLong(otp));
+				user.setOtp(Long.parseLong(otp));
 
 				if (user == null) {
 

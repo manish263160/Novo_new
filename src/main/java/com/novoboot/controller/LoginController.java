@@ -61,7 +61,7 @@ public class LoginController {
 			ResponseEntity<String> responseEntity = loginServices.generateOtp(mobileNo);
 			logger.info("responseEntity === " + responseEntity.hasBody());
 //			return LoginUtils.gebericResponseConvert(responseEntity);
-			JsonNode jsonObj = LoginUtils.gebericResponseConvert(responseEntity);
+			JsonNode jsonObj = LoginUtils.genericResponseConvert(responseEntity);
 			
 			String getmessageFromJsonObj = jsonObj.get("message").asText();
 			String gettypeFromJsonObj = jsonObj.get("type").asText();
@@ -87,7 +87,7 @@ public class LoginController {
 			ResponseEntity<String> responseEntity = loginServices.resendOtp(mobileNo);
 			logger.info("responseEntity === " + responseEntity.hasBody());
 //			return LoginUtils.gebericResponseConvert(responseEntity);
-			JsonNode jsonObj = LoginUtils.gebericResponseConvert(responseEntity);
+			JsonNode jsonObj = LoginUtils.genericResponseConvert(responseEntity);
 			
 			String getmessageFromJsonObj = jsonObj.get("message").asText();
 			String gettypeFromJsonObj = jsonObj.get("type").asText();

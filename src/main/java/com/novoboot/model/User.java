@@ -15,9 +15,11 @@ public class User extends BaseDto implements Serializable{
 	private String mobileNo;
 	private int status;
 	private String token;
-	private Long OTP;
+	private Long otp;
 	private String password;
 	private String role;
+	
+	private String userInfoJson;
 	
 	public int getStatus() {
 		return status;
@@ -145,17 +147,17 @@ public class User extends BaseDto implements Serializable{
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + name + ", address=" + address
-				+ ", email=" + email + "OTP="+OTP+"]";
+				+ ", email=" + email + ", otp="+otp+"]";
 	}
 
 
 
-	public Long getOTP() {
-		return OTP;
+	public Long getOtp() {
+		return otp;
 	}
 
-	public void setOTP(Long oTP) {
-		OTP = oTP;
+	public void setOtp(Long oTP) {
+		otp = oTP;
 	}
 
 	public String getRole() {
@@ -172,6 +174,14 @@ public class User extends BaseDto implements Serializable{
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getUserInfoJson() {
+		return userInfoJson;
+	}
+
+	public void setUserInfoJson(String userInfoJson) {
+		this.userInfoJson = userInfoJson;
 	}
 	
 }

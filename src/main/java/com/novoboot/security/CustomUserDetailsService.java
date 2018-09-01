@@ -42,19 +42,36 @@ public class CustomUserDetailsService implements UserDetailsService {
 		if (user == null) {
 			throw new UsernameNotFoundException(String.format("User %s does not exist!", mobileNo));
 		}
-		return new UserRepositoryUserDetails(user);
+		
+			List<String> roles = null;
+			roles = userService.getUserRoles(user.getId());
+			
+			 if (roles == null || roles.isEmpty()) {
+		            throw new UsernameNotFoundException("User not authorized.");
+		        }
+			Collection<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
+			 if (roles != null) {
+					for (String role : roles) {
+						// ROLE_USER, ROLE_ADMIN,..
+						GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
+						grantList.add(authority);
+					}
+				}
+		
+		 return new UserRepositoryUserDetails(user,userService);
 	}
 
 	private final static class UserRepositoryUserDetails extends User implements UserDetails {
 
 		private static final long serialVersionUID = 1L;
 		private User user;
+		private UserService userService;
 		
-		@Autowired
-		UserService userService;
 
-		private UserRepositoryUserDetails(User user) {
+		private UserRepositoryUserDetails(User user,UserService userService ) {
 			this.user=user;
+			this.userService = userService;
+			
 		}
 
 		@Override
@@ -91,29 +108,29 @@ public class CustomUserDetailsService implements UserDetailsService {
 		}
 
 		@Override
-		public String getUsername() {
-			return null;
-		}
+        public String getUsername() {
+            return getName();
+        }
 
-		@Override
-		public boolean isAccountNonExpired() {
-			return true;
-		}
+        @Override
+        public boolean isAccountNonExpired() {
+            return true;
+        }
 
-		@Override
-		public boolean isAccountNonLocked() {
-			return true;
-		}
+        @Override
+        public boolean isAccountNonLocked() {
+            return true;
+        }
 
-		@Override
-		public boolean isCredentialsNonExpired() {
-			return true;
-		}
+        @Override
+        public boolean isCredentialsNonExpired() {
+            return true;
+        }
 
-		@Override
-		public boolean isEnabled() {
-			return true;
-		}
+        @Override
+        public boolean isEnabled() {
+            return true;
+        }
 
 	}
 

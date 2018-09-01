@@ -40,10 +40,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService)
-                .passwordEncoder(encoder());
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
     	auth.authenticationProvider(novoAuthenticationProvider);
+        auth.userDetailsService(userDetailsService);
     }
 
     @Override
