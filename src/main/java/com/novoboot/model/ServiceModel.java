@@ -15,7 +15,7 @@ public class ServiceModel extends BaseDto {
 	private long serviceCatId;
 	private String serviceName;
 	private String serviceDesc;
-	private String imgageUrl;
+	private String imageUrl;
 	//private int serviceCat; //(1-Home, 0-office) 
 	private int serviceType; //(Enquire-1, Book-0)
 	private int status;
@@ -71,18 +71,7 @@ public class ServiceModel extends BaseDto {
 		this.serviceDesc = serviceDesc;
 	}
 	
-	/**
-	 * @return the imgageUrl
-	 */
-	public String getImgageUrl() {
-		return imgageUrl;
-	}
-	/**
-	 * @param imgageUrl the imgageUrl to set
-	 */
-	public void setImgageUrl(String imgageUrl) {
-		this.imgageUrl = imgageUrl;
-	}
+	
 	/**
 	 * @return the serviceType
 	 */
@@ -127,6 +116,12 @@ public class ServiceModel extends BaseDto {
 	}
 	public void setServiceFor(int serviceFor) {
 		this.serviceFor = serviceFor;
+	}
+	public String getImageUrl() {
+		return imageUrl;
+	}
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 	
 }

@@ -50,5 +50,17 @@ public class BookingServiceController {
 				RESPONSE_CODES.SUCCESS.getCode());
 
 	}
+	
+	/**
+	 * This API will fetch the data of time slots of a particular service.
+	 * @param serviceId
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/get/service/{serviceId}")
+	public ResponseObject getServiceTimeSlots(@PathVariable long serviceId) {
+		return GenUtilities.getSuccessResponseObject(services.getServiceTimeSlot(serviceId), RESPONSE_CODES.SUCCESS.getDescription(),
+				RESPONSE_CODES.SUCCESS.getCode());
+
+	}
 
 }

@@ -18,27 +18,19 @@ public enum OTP_ENUMS {
 	MOBILE_NOT_FOUND("mobile_not_found"),
 	OTP_VERIFIED("otp_verified"),
 	OTP_NOT_VERIFIED("otp_not_verified"),
-	ALREADY_VERIFIED("already_verified"),
-	
-	;
+	ALREADY_VERIFIED("already_verified"),;
 	
 	
 	private final String key;
-//	private final String value;
 
-	private OTP_ENUMS(String key/*, String value*/) {
+	private OTP_ENUMS(String key) {
 		this.key = key;
-//		this.value = value;
 	}
 	
 	public String getKey() {
 		return key;
 	}
-
-/*	public String getValue() {
-		return value;
-	}
-*/	
+	
 	@Override
 	public String toString() {
 		return key + ": " /*+ value*/;

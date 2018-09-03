@@ -11,6 +11,8 @@ import com.novoboot.Enums.CommonEnums.STATUS;
 import com.novoboot.dao.BookingDetailsDao;
 import com.novoboot.jdbcTemplate.NovoJdbcTemplate;
 import com.novoboot.model.BookingDetails;
+import com.novoboot.model.DateTimeSlots;
+import com.novoboot.model.TimeDurationMaster;
 
 @Repository
 public class BookingDetailsDaoImpl extends NovoJdbcTemplate implements BookingDetailsDao {
@@ -27,6 +29,22 @@ public class BookingDetailsDaoImpl extends NovoJdbcTemplate implements BookingDe
 		List<BookingDetails> bookingList = getJdbcTemplate().query(GET_ALL_BOOKING, new BeanPropertyRowMapper<BookingDetails>(BookingDetails.class), STATUS.ACTIVE.ID, STATUS.ACTIVE.ID);
 		logger.info("BookingDetailsDaoImpl getAllBooking() Fetching all booking end"); 
 		return bookingList!=null ? bookingList: new ArrayList<BookingDetails>();
+	}
+
+	@Override
+	public DateTimeSlots getServiceTimeSlot(long serviceId) {
+		logger.info("Getting the time slots for service"); 
+		String query= "select * from date_time_slots where sservice_master_id = ?";
+		DateTimeSlots dateTimeSlotList = getJdbcTemplate().queryForObject(query, new BeanPropertyRowMapper<DateTimeSlots>(DateTimeSlots.class), serviceId);
+		return dateTimeSlotList !=null ? dateTimeSlotList : null;
+	}
+
+	@Override
+	public TimeDurationMaster getTimeDurationMaster(Long timeDurationId) {
+		logger.info("getTimeDurationMaster for timeDurationId = "+timeDurationId); 
+		String query= "select * from time_duration_m where id = ?";
+		TimeDurationMaster timeDurationMaster = getJdbcTemplate().queryForObject(query, new BeanPropertyRowMapper<TimeDurationMaster>(TimeDurationMaster.class), timeDurationId);
+		return timeDurationMaster !=null ? timeDurationMaster : null;
 	}
 
 }
