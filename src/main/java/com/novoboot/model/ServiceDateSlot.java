@@ -1,9 +1,10 @@
 package com.novoboot.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
-public class DateTimeSlots implements Serializable {
+public class ServiceDateSlot implements Serializable {
 
 	/**
 	 * 
@@ -13,18 +14,14 @@ public class DateTimeSlots implements Serializable {
 	private Long id;
 	private Long serviceMasterId;
 	private Long nextNoOfDayAvailable;
-	private Long durationHrs;
-	private Long timeDurationId;
+	private Long timeSlotDuration;
+	private String nextDisabledDates;
+	private Long isEnable;
+	private Date createOn;
 	
-	private List<String> dateList;
 	private List<String> timeSlotsList;
 	
-	public Long getDurationHrs() {
-		return durationHrs;
-	}
-	public void setDurationHrs(Long durationHrs) {
-		this.durationHrs = durationHrs;
-	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -49,17 +46,29 @@ public class DateTimeSlots implements Serializable {
 	public void setTimeSlotsList(List<String> timeSlotsList) {
 		this.timeSlotsList = timeSlotsList;
 	}
-	public List<String> getDateList() {
-		return dateList;
+	public Long getIsEnable() {
+		return isEnable;
 	}
-	public void setDateList(List<String> dateList) {
-		this.dateList = dateList;
+	public void setIsEnable(Long isEnable) {
+		this.isEnable = isEnable;
 	}
-	public Long getTimeDurationId() {
-		return timeDurationId;
+	public Long getTimeSlotDuration() {
+		return timeSlotDuration;
 	}
-	public void setTimeDurationId(Long timeDurationId) {
-		this.timeDurationId = timeDurationId;
+	public void setTimeSlotDuration(Long timeSlotDuration) {
+		this.timeSlotDuration = timeSlotDuration;
+	}
+	public Date getCreateOn() {
+		return createOn;
+	}
+	public void setCreateOn(Date createOn) {
+		this.createOn = createOn;
+	}
+	public String getNextDisabledDates() {
+		return nextDisabledDates;
+	}
+	public void setNextDisabledDates(String nextDisabledDateNumber) {
+		this.nextDisabledDates = nextDisabledDateNumber;
 	}
 	
 	

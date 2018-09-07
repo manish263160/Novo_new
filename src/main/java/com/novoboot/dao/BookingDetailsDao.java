@@ -3,15 +3,15 @@ package com.novoboot.dao;
 import java.util.List;
 
 import com.novoboot.model.BookingDetails;
-import com.novoboot.model.DateTimeSlots;
-import com.novoboot.model.TimeDurationMaster;
+import com.novoboot.model.ServiceDateSlot;
+import com.novoboot.model.ServiceTimeSlot;
 
 public interface BookingDetailsDao {
-	
+
 	public List<BookingDetails> getAllBooking();
 
-	public DateTimeSlots getServiceTimeSlot(long serviceId);
+	public ServiceDateSlot getServiceDateSlot(long serviceId);
 
-	public TimeDurationMaster getTimeDurationMaster(Long timeDurationId);
+	public List<ServiceTimeSlot> getAllTImeSlot();
 
 }

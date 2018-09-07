@@ -2,15 +2,13 @@ package com.novoboot.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.novoboot.Enums.RESPONSE_CODES;
 import com.novoboot.model.ResponseObject;
-import com.novoboot.model.ServiceEnquire;
-import com.novoboot.service.impl.BookingServicesImpl;
+import com.novoboot.service.BookingService;
 import com.novoboot.utils.GenUtilities;
 
 @RestController
@@ -18,7 +16,7 @@ import com.novoboot.utils.GenUtilities;
 public class BookingServiceController {
 
 	@Autowired
-	private BookingServicesImpl services;
+	private BookingService services;
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/serviceDetails")
 	public ResponseObject getAllServicesDetails() {
@@ -56,9 +54,9 @@ public class BookingServiceController {
 	 * @param serviceId
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/get/service/{serviceId}")
+	@RequestMapping(method = RequestMethod.GET, value = "/get/serviceDateTime/{serviceId}")
 	public ResponseObject getServiceTimeSlots(@PathVariable long serviceId) {
-		return GenUtilities.getSuccessResponseObject(services.getServiceTimeSlot(serviceId), RESPONSE_CODES.SUCCESS.getDescription(),
+		return GenUtilities.getSuccessResponseObject(services.getServiceDateTimeSlot(serviceId), RESPONSE_CODES.SUCCESS.getDescription(),
 				RESPONSE_CODES.SUCCESS.getCode());
 
 	}

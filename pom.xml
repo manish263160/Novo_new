@@ -38,12 +38,18 @@
 			<artifactId>spring-security-jwt</artifactId>
 			<version>1.0.9.RELEASE</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
 		<!-- Provided tomcat in externally -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
 		</dependency>
+
+
 
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail -->
 		<dependency>
@@ -108,7 +114,7 @@
 	</properties>
 
 	<build>
-	<finalName>NovoWash</finalName>
+		<finalName>NovoWash</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

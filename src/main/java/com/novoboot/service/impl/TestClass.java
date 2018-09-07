@@ -49,14 +49,14 @@ public class TestClass {
 		SimpleDateFormat lal = new SimpleDateFormat("hh:mm a");
 
 		
-//		Long currentLocalTIme = cal.getTime().getTime();
+		Long currentLocalTIme = cal.getTime().getTime();
 		String originalString = "04-09-2018 09:00:02";
 		Date date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(originalString);
 		String newString = new SimpleDateFormat("hh:mm a").format(date); // 9:00
 		System.out.println("new string : "+newString);
 		
 		
-		Long currentLocalTIme = date.getTime();
+//		Long currentLocalTIme = date.getTime();
 		System.out.println("currentLocalTIme: "+new SimpleDateFormat("hh:mm a").format(date));
 		//Date d = new Date(dateObj1.getTime() + 3600000);
 

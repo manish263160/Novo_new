@@ -5,17 +5,22 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.sql.Time;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,16 +28,17 @@ import com.novoboot.Enums.CommonEnums;
 import com.novoboot.dao.BookingDetailsDao;
 import com.novoboot.dao.ServicesDao;
 import com.novoboot.model.BookingDetails;
-import com.novoboot.model.DateTimeSlots;
 import com.novoboot.model.Mail;
 import com.novoboot.model.ServiceCategory;
 import com.novoboot.model.ServiceCost;
+import com.novoboot.model.ServiceDateSlot;
 import com.novoboot.model.ServiceEnquire;
 import com.novoboot.model.ServiceModel;
-import com.novoboot.model.TimeDurationMaster;
+import com.novoboot.model.ServiceTimeSlot;
 import com.novoboot.service.BookingService;
 import com.novoboot.service.MailerService;
 import com.novoboot.service.VelocityEmailTemplateService;
+import com.novoboot.utils.GenUtilities;
 
 @Service
 public class BookingServicesImpl implements BookingService {
@@ -198,22 +204,94 @@ public class BookingServicesImpl implements BookingService {
 	 * @param serviceId
 	 * @return
 	 */
-	public DateTimeSlots getServiceTimeSlot(long serviceId) {
-		DateTimeSlots data = bookingDao.getServiceTimeSlot(serviceId);
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-		Date date = new Date();
+	public Map<String, Map<String, Boolean>> getServiceDateTimeSlot(long serviceId) {
 
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+		Map<String, Map<String, Boolean>> returnObject = new LinkedHashMap<>();
 
-		List<String> dateList = new ArrayList<>();
+		ServiceDateSlot serviceDateSlotData = bookingDao.getServiceDateSlot(serviceId);
+
+		 List<ServiceTimeSlot> timeSlotList= bookingDao.getAllTImeSlot();
+		 
 		List<String> timeSlotsList = new ArrayList<>();
 
-		Long timeDurationId= data.getTimeDurationId();
-		if(timeDurationId != null) {
-			TimeDurationMaster timeduration = bookingDao.getTimeDurationMaster(timeDurationId);
+		try {
+			if (serviceDateSlotData != null) {
+				Calendar cal = Calendar.getInstance();
+
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				
+				SimpleDateFormat timeFormatAmPm = new SimpleDateFormat("hh:mm a");
+				
+				SimpleDateFormat timeFormat24 = new SimpleDateFormat("HH:mm:ss");
+				
+
+				logger.info("cal===" + sdf.format(cal.getTime()));
+
+				Long nextNumberOfDays = serviceDateSlotData.getNextNoOfDayAvailable();
+
+//				List<String> dateList = new ArrayList<>();
+
+				List<String> nextDisabledDateNumberList = new ArrayList<>();
+
+				if (serviceDateSlotData.getNextDisabledDates() != null
+						|| !serviceDateSlotData.getNextDisabledDates().isEmpty()) {
+					
+					String nextDisabledDateNumberString = serviceDateSlotData.getNextDisabledDates();
+					
+					nextDisabledDateNumberList = Arrays.asList(nextDisabledDateNumberString.split("\\s*|\\s*"));
+				}
+				
+				Date currentDate= new Date();
+				if(!nextDisabledDateNumberList.contains(sdf.format(currentDate))) {
+				fetchTimeSlots(returnObject, timeSlotList, timeFormatAmPm, timeFormat24, sdf.format(currentDate) , timeFormat24.format(currentDate));
+				}
+				
+				for (int i = 1; i <= nextNumberOfDays.longValue(); i++) {
+
+					cal.add(Calendar.DATE, 1);
+					
+					String newDate = sdf.format(cal.getTime());
+					if(nextDisabledDateNumberList != null && !nextDisabledDateNumberList.isEmpty() && nextDisabledDateNumberList.contains(newDate)) {
+						
+//						dateList.add(newDate);
+						
+						continue;
+					}else {
+//						dateList.add(newDate);
+						String currentTime = timeFormat24.format(new Date());
+						fetchTimeSlots(returnObject, timeSlotList, timeFormatAmPm, timeFormat24, newDate , currentTime);
+					}
+				}
+				
+					logger.debug("dateList ===" + returnObject);
+
+			}
+		} catch (DataAccessException | ParseException e) {
+			logger.error(e.getMessage());
 		}
-		return data;
+		return returnObject;
+	}
+
+	private void fetchTimeSlots(Map<String, Map<String, Boolean>> returnObject, List<ServiceTimeSlot> timeSlotList,
+			SimpleDateFormat timeFormatAmPm, SimpleDateFormat timeFormat24, String newDate ,String currentTime) throws ParseException {
+		Map<String, Boolean> map = new LinkedHashMap<>();
+		for (ServiceTimeSlot serviceTimeSlot : timeSlotList) {
+			String startTime= serviceTimeSlot.getStartTime();
+			String endTime = serviceTimeSlot.getEndTime();
+			String key = timeFormatAmPm.format(timeFormat24.parse(startTime))+" - "+ timeFormatAmPm.format(timeFormat24.parse(endTime)); 
+			try {
+				String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+				boolean bool = true;
+				if(newDate.equals(currentDate))
+					bool= 	!GenUtilities.isTimeBetweenTwoTime(startTime , endTime , currentTime);
+				
+			map.put(key, bool);
+			} catch (ParseException e) {
+				logger.error("error :: "+ e.getMessage());
+			}
+			
+		}
+		 returnObject.put(newDate, map);
 	}
 
 	/*

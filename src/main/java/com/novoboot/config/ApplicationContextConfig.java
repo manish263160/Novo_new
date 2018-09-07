@@ -13,7 +13,6 @@ import org.apache.velocity.exception.VelocityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
@@ -22,6 +21,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.ui.velocity.VelocityEngineFactoryBean;
 
+import com.novoboot.cronjob.CronJobs;
 import com.novoboot.utils.ApplicationProperties;
 
 @Configuration
@@ -137,4 +137,11 @@ public class ApplicationContextConfig {
 		public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() {
 			return new PropertySourcesPlaceholderConfigurer();
 		}
+	  
+	  @Bean
+	  public CronJobs taskScheduler() {
+		  CronJobs className = new CronJobs();
+	     // set properties
+	     return className;
+	  }
 }
