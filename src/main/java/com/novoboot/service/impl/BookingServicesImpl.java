@@ -5,7 +5,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,9 +12,11 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -220,7 +221,7 @@ public class BookingServicesImpl implements BookingService {
 
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				
-				SimpleDateFormat timeFormatAmPm = new SimpleDateFormat("hh:mm a");
+				SimpleDateFormat timeFormatAmPm = new SimpleDateFormat("hh a");
 				
 				SimpleDateFormat timeFormat24 = new SimpleDateFormat("HH:mm:ss");
 				
@@ -238,12 +239,14 @@ public class BookingServicesImpl implements BookingService {
 					
 					String nextDisabledDateNumberString = serviceDateSlotData.getNextDisabledDates();
 					
-					nextDisabledDateNumberList = Arrays.asList(nextDisabledDateNumberString.split("\\s*|\\s*"));
+					if(nextDisabledDateNumberString != null)
+					nextDisabledDateNumberList = Arrays.asList(nextDisabledDateNumberString.trim().replaceAll(" ", "").split("##"));
 				}
 				
+				logger.debug("nextDisabledDateNumberList ="+nextDisabledDateNumberList.toString());
 				Date currentDate= new Date();
 				if(!nextDisabledDateNumberList.contains(sdf.format(currentDate))) {
-				fetchTimeSlots(returnObject, timeSlotList, timeFormatAmPm, timeFormat24, sdf.format(currentDate) , timeFormat24.format(currentDate));
+				fetchTimeSlots(returnObject, timeSlotList, timeFormatAmPm, timeFormat24, sdf.format(currentDate) /*, timeFormat24.format(currentDate)*/);
 				}
 				
 				for (int i = 1; i <= nextNumberOfDays.longValue(); i++) {
@@ -254,12 +257,12 @@ public class BookingServicesImpl implements BookingService {
 					if(nextDisabledDateNumberList != null && !nextDisabledDateNumberList.isEmpty() && nextDisabledDateNumberList.contains(newDate)) {
 						
 //						dateList.add(newDate);
-						
+						returnObject.put(newDate+"##false", null);
 						continue;
 					}else {
 //						dateList.add(newDate);
-						String currentTime = timeFormat24.format(new Date());
-						fetchTimeSlots(returnObject, timeSlotList, timeFormatAmPm, timeFormat24, newDate , currentTime);
+//						String currentTime = timeFormat24.format(new Date());
+						fetchTimeSlots(returnObject, timeSlotList, timeFormatAmPm, timeFormat24, newDate /*, currentTime*/);
 					}
 				}
 				
@@ -273,7 +276,7 @@ public class BookingServicesImpl implements BookingService {
 	}
 
 	private void fetchTimeSlots(Map<String, Map<String, Boolean>> returnObject, List<ServiceTimeSlot> timeSlotList,
-			SimpleDateFormat timeFormatAmPm, SimpleDateFormat timeFormat24, String newDate ,String currentTime) throws ParseException {
+			SimpleDateFormat timeFormatAmPm, SimpleDateFormat timeFormat24, String newDate /*,String currentTime*/) throws ParseException {
 		Map<String, Boolean> map = new LinkedHashMap<>();
 		for (ServiceTimeSlot serviceTimeSlot : timeSlotList) {
 			String startTime= serviceTimeSlot.getStartTime();
@@ -283,7 +286,7 @@ public class BookingServicesImpl implements BookingService {
 				String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 				boolean bool = true;
 				if(newDate.equals(currentDate))
-					bool= 	!GenUtilities.isTimeBetweenTwoTime(startTime , endTime , currentTime);
+					bool= 	GenUtilities.isTimeBetweenTwoTime(startTime , endTime /*, currentTime*/);
 				
 			map.put(key, bool);
 			} catch (ParseException e) {
@@ -291,7 +294,13 @@ public class BookingServicesImpl implements BookingService {
 			}
 			
 		}
-		 returnObject.put(newDate, map);
+		Set<Boolean> setValue= new HashSet<Boolean>(map.values());
+		if(setValue.size() == 1 && setValue.contains(false)) {
+			returnObject.put(newDate+"##false", map);	
+		}else {
+			returnObject.put(newDate+"##true", map);
+		}
+//		 returnObject.put(newDate, map);
 	}
 
 	/*

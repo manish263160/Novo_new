@@ -11,7 +11,7 @@ public interface UserService {
 	
 	User findUserByMobile(String mobileNo);
 	
-	boolean saveUser(String mobileNo) throws Exception;
+	User saveUser(String mobileNo , String otp) throws Exception;
 	
 	void updateUser(User user);
 	

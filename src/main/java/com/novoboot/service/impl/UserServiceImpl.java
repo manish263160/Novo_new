@@ -22,12 +22,13 @@ import com.novoboot.service.UserService;
 public class UserServiceImpl implements UserService {
 
 	private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
-	@Autowired	private UserDao userDao;
-	@Autowired private UserAuthService userAuthService;
+	@Autowired
+	private UserDao userDao;
+	@Autowired
+	private UserAuthService userAuthService;
 
-	
 	private BCryptPasswordEncoder bcryptEncoder;
-	
+
 	@Override
 	public User findById(long id) {
 		// TODO Auto-generated method stub
@@ -41,27 +42,28 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public boolean saveUser(String mobileNo) throws Exception{
-		
+	public User saveUser(String mobileNo, String otp) throws Exception {
+
+		User usr = new User();
 		try {
-			User usr= new User();
 			usr.setMobileNo(mobileNo);
+			if (!otp.isEmpty()) {
+				usr.setOtp(Long.valueOf(otp));
+			}
 			usr.setName(BASIC_STRINGS.DEFAULT_USER.getStringName());
 			usr.setStatus(STATUS.ACTIVE.ID);
 			userDao.saveUser(usr);
-			
+
 			/**
 			 * This part of vode with insert the user role in DB
 			 */
 			userDao.insertUserRole(usr.getId());
-			return true;
 		} catch (DataAccessException e) {
-			logger.error("DataAccessException and roleback ="+e.getMessage());
+			logger.error("DataAccessException and roleback =" + e.getMessage());
+		} catch (Exception e) {
+			logger.error("Exception ====" + e.getMessage());
 		}
-		catch (Exception e) {
-			logger.error("Exception ===="+e.getMessage());
-		}
-		return false;
+		return usr;
 	}
 
 	@Override
@@ -97,21 +99,20 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUserByUserName(String userName, String password, String deviceId) {
 		User user = userDao.getUserByUserName(userName, password);
-		/*if (user != null && user.getId() > 0) {
-			UserAuth userAuth = new UserAuth();
-			userAuth.setUserName(userName);
-			userAuth.setUserId(user.getId());
-			userAuth.setDeviceId(deviceId);
-			userAuth.setExpiryInMills(ApplicationConstants.EXPIRY_TIME_IN_MILLI_SEC);
-			userAuth.setAuthToken(user.getToken());
-			userAuthService.createUserAuth(userAuth);
-		}*/
+		/*
+		 * if (user != null && user.getId() > 0) { UserAuth userAuth = new UserAuth();
+		 * userAuth.setUserName(userName); userAuth.setUserId(user.getId());
+		 * userAuth.setDeviceId(deviceId);
+		 * userAuth.setExpiryInMills(ApplicationConstants.EXPIRY_TIME_IN_MILLI_SEC);
+		 * userAuth.setAuthToken(user.getToken());
+		 * userAuthService.createUserAuth(userAuth); }
+		 */
 		return user;
 	}
 
 	@Override
 	public List<String> getUserRoles(Long userId) {
-		
+
 		List<String> userRole = userDao.getUserRoles(userId);
 		return userRole;
 	}

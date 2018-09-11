@@ -144,4 +144,26 @@ public class ApplicationContextConfig {
 	     // set properties
 	     return className;
 	  }
+	  
+
+	/*@Bean
+	public FlatFileItemReader<ServiceDateSlot> csvAnimeReader() {
+		FlatFileItemReader<ServiceDateSlot> reader = new FlatFileItemReader<ServiceDateSlot>();
+		reader.setResource(new ClassPathResource("service_date_slot.csv"));
+		reader.setLineMapper(new DefaultLineMapper<ServiceDateSlot>() {
+			{
+				setLineTokenizer(new DelimitedLineTokenizer() {
+					{
+						setNames(new String[] { "id", "service_master_id", "next_no_of_day_available" ,"time_slot_duration" ,"next_disabled_dates" });
+					}
+				});
+				setFieldSetMapper(new BeanWrapperFieldSetMapper<ServiceDateSlot>() {
+					{
+						setTargetType(ServiceDateSlot.class);
+					}
+				});
+			}
+		});
+		return reader;
+	}*/
 }

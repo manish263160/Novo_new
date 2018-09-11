@@ -53,7 +53,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/user/**").access("hasRole('ROLE_USER')")
                 .antMatchers("/signup/**").permitAll()
                 .antMatchers("/login/**").permitAll()
-                .antMatchers("/services/**","/partner/**").permitAll()   
+                .antMatchers("/services/**","/partner/**","/payment/**").permitAll()   
                 .anyRequest().authenticated()
                 .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
 	}

@@ -46,7 +46,7 @@ public class DateTimeSlotDaoImpl extends NovoJdbcTemplate implements DateTimeSlo
 
 	@Override
 	public void importCsvIntoServiceDate() {
-		String loadQuery = "LOAD DATA LOCAL INFILE '" + "D:\\service_date_slot.csv"
+		String loadQuery = "LOAD DATA LOCAL INFILE '" + "D://service_date_slot.csv"
 				+ "' INTO TABLE demo_table FIELDS TERMINATED BY ','"
 				+ " LINES TERMINATED BY '\n' (id, service_master_id, next_no_of_day_available, time_slot_duration , next_disabled_dates) ";
 		getJdbcTemplate().execute(loadQuery);

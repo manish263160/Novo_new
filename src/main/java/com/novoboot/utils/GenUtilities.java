@@ -16,7 +16,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -37,9 +37,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -55,6 +56,8 @@ public class GenUtilities {
 	private static Cipher cipher;
 	private static SecretKey secretKey;
 
+	@Autowired
+	ApplicationProperties applicationProperties;
 	
 	public static ResponseObject getSuccessResponseObject(Object obj) {
 		ResponseObject responseObject = new ResponseObject();
@@ -420,39 +423,29 @@ public class GenUtilities {
 
 	}
 	
-	public static boolean isTimeBetweenTwoTime(String initialTime, String finalTime, String currentTime) throws ParseException {
-        String reg = "^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$";
-        if (initialTime.matches(reg) && finalTime.matches(reg) && currentTime.matches(reg)) {
-            boolean valid = false;
-            //Start Time
-            java.util.Date inTime = new SimpleDateFormat("HH:mm:ss").parse(initialTime);
-            Calendar calendar1 = Calendar.getInstance();
-            calendar1.setTime(inTime);
+	public static boolean isTimeBetweenTwoTime(String initialTime, String finalTime) throws ParseException {
+		String reg = "^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$";
+		SimpleDateFormat timeFormat24 = new SimpleDateFormat("HH:mm:ss");
+		String currentTime = timeFormat24.format(new Date());
+		if (initialTime.matches(reg) && finalTime.matches(reg) && currentTime.matches(reg)) {
+			boolean valid = false;
+			
+			Date start= timeFormat24.parse(initialTime);
+			Date enDate= timeFormat24.parse(finalTime);
+			Date cuDate = timeFormat24.parse(currentTime);
+			
+			
+			if(cuDate.before(enDate) && cuDate.before(start)) {
+				valid = true;
+			}
+			
+			logger.debug("endDate ::"+enDate+" cuDate ::"+cuDate + " validity ::"+valid);
+			return valid;
+		} else {
+			throw new IllegalArgumentException("Not a valid time, expecting HH:MM:SS format");
+		}
 
-            //Current Time
-            java.util.Date checkTime = new SimpleDateFormat("HH:mm:ss").parse(currentTime);
-            Calendar calendar3 = Calendar.getInstance();
-            calendar3.setTime(checkTime);
-
-            //End Time
-            java.util.Date finTime = new SimpleDateFormat("HH:mm:ss").parse(finalTime);
-            Calendar calendar2 = Calendar.getInstance();
-            calendar2.setTime(finTime);
-
-            if (finalTime.compareTo(initialTime) < 0) {
-                calendar2.add(Calendar.DATE, 1);
-                calendar3.add(Calendar.DATE, 1);
-            }
-
-            java.util.Date actualTime = calendar3.getTime();
-            if ((actualTime.after(calendar1.getTime()) || actualTime.compareTo(calendar1.getTime()) == 0) 
-                    && actualTime.before(calendar2.getTime())) {
-                valid = true;
-            }
-            return valid;
-        } else {
-            throw new IllegalArgumentException("Not a valid time, expecting HH:MM:SS format");
-        }
-
-    }
+	}
+	
+	
 }

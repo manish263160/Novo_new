@@ -83,20 +83,20 @@ public class NovoAuthenticationProvider implements AuthenticationProvider {
 			else if (getmessageFromJsonObj.equalsIgnoreCase(OTP_ENUMS.OTP_VERIFIED.getKey())
 					|| getmessageFromJsonObj.equalsIgnoreCase(OTP_ENUMS.ALREADY_VERIFIED.getKey())) {
 
-				User user = userService.findUserByMobile(mobileNo);
-				user.setMobileNo(mobileNo);
-				user.setOtp(Long.parseLong(otp));
+				User user = userService.findUserByMobile(mobileNo);		
 
 				if (user == null) {
 
-					boolean bool= userService.saveUser(mobileNo);
-					if(bool) {
+					User saveduser= userService.saveUser(mobileNo , otp);
+					if(saveduser != null) {
 					List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
-					GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + UserRoleType.USER.getUserProfileType());
+					String roles = "ROLE_" + UserRoleType.USER.getUserProfileType();
+					GrantedAuthority authority = new SimpleGrantedAuthority(roles);
 					
 					grantList.add(authority);
+					saveduser.setRole(roles);
 					
-					UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user, otp, grantList);
+					UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(saveduser, otp, grantList);
 					
 					return token;
 					}else {
