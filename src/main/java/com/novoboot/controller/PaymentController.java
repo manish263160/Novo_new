@@ -75,11 +75,10 @@ public class PaymentController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/webhookGet" , consumes=MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	private void getResponse(MultiValueMap<String, String> paramMap) {
+	private void getResponse(WebHookModel webHookModel) {
 		
-		logger.info("WebHookModel ===="+paramMap.toString());
-		/*WebHookModel webHookModel = new WebHookModel();
 		logger.info("WebHookModel ===="+webHookModel.toString());
+		/*WebHookModel webHookModel = new WebHookModel();
 		String userMobile = webHookModel.getBuyerPhone();
 		if(userMobile != null) {
 				User user= userService.findUserByMobile(userMobile);
