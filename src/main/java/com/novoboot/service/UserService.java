@@ -26,5 +26,7 @@ public interface UserService {
 	User getUserByUserName(String userName, String password, String deviceId);
 
 	List<String> getUserRoles(Long userId);
+
+	boolean insertPotentialCuastomer(String name, String email);
 	
 }

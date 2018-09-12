@@ -136,4 +136,15 @@ public class UserDaoImpl extends NovoJdbcTemplate implements UserDao{
 		
 	}
 
+	@Override
+	public boolean insertPotentialCuastomer(String name, String email) {
+
+		String sql = "insert into potential_customers(name , email) values (?,?)";
+		int updt = getJdbcTemplate().update(sql, new Object[] { name, email });
+		if (updt > 0) {
+			return true;
+		}
+		return false;
+	}
+
 }

@@ -117,4 +117,9 @@ public class UserServiceImpl implements UserService {
 		return userRole;
 	}
 
+	@Override
+	public boolean insertPotentialCuastomer(String name, String email) {
+		return userDao.insertPotentialCuastomer(name, email);
+	}
+
 }

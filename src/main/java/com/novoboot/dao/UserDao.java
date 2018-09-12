@@ -27,4 +27,6 @@ User getUserByUserName(String userName, String password);
 List<String> getUserRoles(Long userId);
 
 void insertUserRole(long id);
+
+boolean insertPotentialCuastomer(String name, String email);
 }

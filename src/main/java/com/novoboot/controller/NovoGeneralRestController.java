@@ -3,7 +3,6 @@ package com.novoboot.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,13 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.novoboot.model.User;
 import com.novoboot.service.UserService;
  
 @RestController
-public class HelloWorldRestController {
+public class NovoGeneralRestController {
  
     @Autowired
     UserService userService;  //Service which will do all data retrieval/manipulation work
@@ -49,26 +47,8 @@ public class HelloWorldRestController {
         }
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
- 
      
-     
-    //-------------------Create a User--------------------------------------------------------
-     
-  /*  @RequestMapping(value = "/user/", method = RequestMethod.POST)
-    public ResponseEntity<Void> createUser(@RequestBody User user,    UriComponentsBuilder ucBuilder) {
- 
-        if (userService.isUserExist(user)) {
-            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
-        }
- 
-        userService.saveUser(user);
- 
-        HttpHeaders headers = new HttpHeaders();
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
-    }*/
- 
     
-     
     //------------------- Update a User --------------------------------------------------------
      
     @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)

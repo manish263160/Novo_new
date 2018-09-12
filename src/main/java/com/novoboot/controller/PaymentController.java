@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +22,7 @@ import com.novoboot.wrapper.api.InstamojoImpl;
 import com.novoboot.wrapper.response.CreatePaymentOrderResponse;
 
 @RestController
+@CrossOrigin(origins="*")
 @RequestMapping(value = "/payment")
 public class PaymentController {
 
