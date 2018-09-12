@@ -6,9 +6,11 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.novoboot.dao.PaymentDao;
 import com.novoboot.service.PaymentService;
 import com.novoboot.utils.ApplicationProperties;
 import com.novoboot.wraper.model.PaymentOrder;
+import com.novoboot.wraper.model.WebHookModel;
 import com.novoboot.wrapper.api.Instamojo;
 import com.novoboot.wrapper.api.InstamojoImpl;
 import com.novoboot.wrapper.exception.ConnectionException;
@@ -22,6 +24,9 @@ public class PaymentServiceImpl implements PaymentService {
 	
 	@Autowired
 	ApplicationProperties applicationProperties;
+	
+	@Autowired
+	PaymentDao paymentDao;
 	
 	/**
 	 * This method will get the api related details with authtoken
@@ -63,6 +68,12 @@ public class PaymentServiceImpl implements PaymentService {
 			logger.error( e.toString(), e);
 		}
 		return null;
+	}
+
+	@Override
+	public void inserstPaymentSuccessFull(WebHookModel webHookModel) {
+		paymentDao.inserstPaymentSuccessFull(webHookModel);
+		
 	}
 
 }

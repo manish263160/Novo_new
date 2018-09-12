@@ -9,14 +9,18 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.novoboot.Enums.RESPONSE_CODES;
 import com.novoboot.model.ResponseObject;
+import com.novoboot.model.User;
 import com.novoboot.service.PaymentService;
+import com.novoboot.service.UserService;
 import com.novoboot.utils.ApplicationProperties;
 import com.novoboot.utils.GenUtilities;
 import com.novoboot.wraper.model.PaymentOrder;
+import com.novoboot.wraper.model.WebHookModel;
 import com.novoboot.wrapper.api.Instamojo;
 import com.novoboot.wrapper.api.InstamojoImpl;
 import com.novoboot.wrapper.response.CreatePaymentOrderResponse;
@@ -33,6 +37,10 @@ public class PaymentController {
 
 	@Autowired
 	PaymentService paymentService;
+	
+	@Autowired
+	UserService userService;
+	
 
 	@RequestMapping(method = RequestMethod.POST, value = "/paymentRequest")
 	private ResponseObject getRequest(@RequestBody PaymentOrder paymentOrder) {
@@ -64,8 +72,21 @@ public class PaymentController {
 				RESPONSE_CODES.SUCCESS.getDescription(), RESPONSE_CODES.SUCCESS.getCode());
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/webhookGet")
-	private void getResponse() {
-		logger.info("you are here webhook Get call ====");
+	@RequestMapping(method = RequestMethod.POST, value = "/webhookGet")
+	private void getResponse(@RequestBody WebHookModel webHookModel) {
+		logger.info("WebHookModel ===="+webHookModel.toString());
+		String userMobile = webHookModel.getBuyerPhone();
+		if(userMobile != null) {
+				User user= userService.findUserByMobile(userMobile);
+				if(user != null) {
+					webHookModel.setUserId(user.getId());
+				}
+			paymentService.inserstPaymentSuccessFull(webHookModel);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/paymentRedirectUrl")
+	private void getpaymentRedirectUrl(@RequestParam(value="payment_request_id ") String payment_request_id , @RequestParam(value="payment_id") String payment_id) {
+		logger.info("getpaymentRedirectUrl :: payment_request_id"+payment_request_id+" payment_id ::"+payment_id);
 	}
 }
