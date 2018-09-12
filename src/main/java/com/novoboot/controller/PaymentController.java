@@ -64,8 +64,8 @@ public class PaymentController {
 				RESPONSE_CODES.SUCCESS.getDescription(), RESPONSE_CODES.SUCCESS.getCode());
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/paymentresponse}")
+	@RequestMapping(method = RequestMethod.GET, value = "/webhookGet")
 	private void getResponse() {
-		logger.info("respponse ====");
+		logger.info("you are here webhook Get call ====");
 	}
 }
