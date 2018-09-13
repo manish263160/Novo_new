@@ -27,9 +27,9 @@ public class PotentialCustomerController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.PUT, value ="/insertPotentialUser")
-	private ResponseObject insertPotentialCuastomer(@RequestParam String name , @RequestParam String email){
-		logger.debug("name :: email :: "+name +" "+email);
-		boolean bool = userService.insertPotentialCuastomer(name,email);
+	private ResponseObject insertPotentialCuastomer(@RequestParam String name , @RequestParam String phone){
+		logger.debug("name :: email :: "+name +" "+phone);
+		boolean bool = userService.insertPotentialCuastomer(name,phone);
 		if(!bool) {
 			return GenUtilities.getFailureResponseObject(bool, "inser into potential customer fail", RESPONSE_CODES.FAIL.getCode(), RESPONSE_CODES.FAIL.getDescription());
 		}else {
