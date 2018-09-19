@@ -9,7 +9,7 @@ import com.novoboot.model.ServiceEnquire;
 
 public interface ServicesDao {
 	
-	public List<ServiceCategory> getAllServicesDetails();
+//	public List<ServiceCategory> getAllServicesDetails();
 	
 	public List<ServiceCategory> getAllServiceCategories();
 	

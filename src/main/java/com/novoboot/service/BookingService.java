@@ -12,7 +12,7 @@ import com.novoboot.model.ServiceModel;
 
 public interface BookingService extends Serializable {
 
-	public List<ServiceCategory> getAllServicesDetails();
+//	public List<ServiceCategory> getAllServicesDetails();
 
 	public List<ServiceCategory> getAllServiceCategories();
 

@@ -67,4 +67,13 @@ public class CommonEnums {
 
 	}
 
+	public enum SERVICE_WINDOW {
+		INCREMENT(1), CHECKBOX(2);
+
+		public int ID;
+
+		SERVICE_WINDOW(int id) {
+			this.ID = id;
+		}
+	}
 }

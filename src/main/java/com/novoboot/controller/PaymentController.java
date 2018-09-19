@@ -6,7 +6,6 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,9 +75,7 @@ public class PaymentController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/webhookGet" , consumes=MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	private void getResponse(WebHookModel webHookModel) {
-		
 		logger.info("WebHookModel ===="+webHookModel.toString());
-		/*WebHookModel webHookModel = new WebHookModel();
 		String userMobile = webHookModel.getBuyerPhone();
 		if(userMobile != null) {
 				User user= userService.findUserByMobile(userMobile);
@@ -86,7 +83,7 @@ public class PaymentController {
 					webHookModel.setUserId(user.getId());
 				}
 			paymentService.inserstPaymentSuccessFull(webHookModel);
-		}*/
+		}
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/paymentRedirectUrl")

@@ -18,27 +18,27 @@ public class BookingServiceController {
 	@Autowired
 	private BookingService services;
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/serviceDetails")
+	/*@RequestMapping(method = RequestMethod.GET, value = "/serviceDetails")
 	public ResponseObject getAllServicesDetails() {
 		return GenUtilities.getSuccessResponseObject(services.getAllServicesDetails(), RESPONSE_CODES.SUCCESS.getDescription(),
 				RESPONSE_CODES.SUCCESS.getCode());
 	}
-	
+	*/
 	@RequestMapping(method = RequestMethod.GET, value = "/get/category")
 	public ResponseObject getAllServiceCategories() {
 		return GenUtilities.getSuccessResponseObject(services.getAllServiceCategories(), RESPONSE_CODES.SUCCESS.getDescription(),
 				RESPONSE_CODES.SUCCESS.getCode());
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/getAllServices")
-	public ResponseObject getAllCategory() {
-		return GenUtilities.getSuccessResponseObject(services.getAllServices(), RESPONSE_CODES.SUCCESS.getDescription(),
-				RESPONSE_CODES.SUCCESS.getCode());
-	}
-	
 	@RequestMapping(method = RequestMethod.GET, value = "/get/{categoryId}")
 	public ResponseObject getAllServiceByCatId(@PathVariable long categoryId) {
 		return GenUtilities.getSuccessResponseObject(services.getAllServicsByCatId(categoryId), RESPONSE_CODES.SUCCESS.getDescription(),
+				RESPONSE_CODES.SUCCESS.getCode());
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/getAllServices")
+	public ResponseObject getAllServices() {
+		return GenUtilities.getSuccessResponseObject(services.getAllServices(), RESPONSE_CODES.SUCCESS.getDescription(),
 				RESPONSE_CODES.SUCCESS.getCode());
 	}
 
@@ -48,6 +48,8 @@ public class BookingServiceController {
 				RESPONSE_CODES.SUCCESS.getCode());
 
 	}
+	
+	
 	
 	/**
 	 * This API will fetch the data of time slots of a particular service.

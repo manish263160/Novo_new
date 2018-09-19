@@ -21,8 +21,8 @@ public class BookingDetailsDaoImpl extends NovoJdbcTemplate implements BookingDe
 	private static final Logger logger = Logger.getLogger(BookingDetailsDaoImpl.class);
 	
 	private static final String GET_ALL_BOOKING = "select scm.cat_name as serviceCategory, sm.service_name as serviceName, se.* from booking_details se "
-			 +"	inner join  service_m sm on sm.id = se.service_id and sm.status = ? "
-			 +"	inner join  service_cat_m scm on scm.id = sm.service_cat_id and scm.status = ?";
+			 +"	inner join  service_master sm on sm.id = se.service_id and sm.status = ? "
+			 +"	inner join  service_cat_master scm on scm.id = sm.service_cat_id and scm.status = ?";
 
 	@Override
 	public List<BookingDetails> getAllBooking() {

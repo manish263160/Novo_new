@@ -35,27 +35,27 @@ public class ServicesDaoImpl extends NovoJdbcTemplate implements ServicesDao {
 
 	private static final Logger logger = Logger.getLogger(ServicesDaoImpl.class);
 	
-	private static final String GET_ALL_SERVICE_CAT = "select * from service_cat_m where status = ?";
+	private static final String GET_ALL_SERVICE_CAT = "select * from service_cat_master where status = ?";
 
-	private static final String GET_ALL_SERVICES = "select * from service_m where status = ?";
+	private static final String GET_ALL_SERVICES = "select * from service_master where status = ?";
 
-	private static final String GET_SERVICES_COST = "select * from service_cost where status = ? and service_id=? order by price";
+	private static final String GET_SERVICES_COST = "select * from service_cost_master where status = ? and service_master_id=? ";
 
 	private static final String BOOK_SERVICE_SQL = "insert into booking_details(service_id,service_cost_id,service_date,house,landmark,locality,name,phone,email,status,created_on,created_by) "
 			+ "						values(?,?,?,?,?,?,?,?,?,?,now(),?)";
 	
-	private static final String ALL_SERVICES = "select scm.id ,scm.cat_name,scm.cat_desc,scm.image_url cat_image_url, " +
+/*	private static final String ALL_SERVICES = "select scm.id ,scm.cat_name,scm.cat_desc,scm.image_url cat_image_url, " +
 			" sm.id as ser_id ,sm.service_cat_id,sm.service_name, sm.service_desc,sm.service_type,sm.image_url service_image_url, " +
 			" sc.id as service_cost_id, sc.service_id, sc.cost_details, sc.price  " +
-			" from service_cat_m scm " +
-			" left join  service_m sm on sm.service_cat_id = scm.id and sm.status = " + STATUS.ACTIVE.ID +
+			" from service_cat_master scm " +
+			" left join  service_master sm on sm.service_cat_id = scm.id and sm.status = " + STATUS.ACTIVE.ID +
 			" left join service_cost sc on sc.service_id = sm.id and sc.status = " + STATUS.ACTIVE.ID +
-			" where scm.status = " + STATUS.ACTIVE.ID;
+			" where scm.status = " + STATUS.ACTIVE.ID;*/
 	
-	@Override
+	/*@Override
 	public List<ServiceCategory> getAllServicesDetails() {
 		return getJdbcTemplate().query(ALL_SERVICES, new ServiceRowMapper());
-	}
+	}*/
 	
 	@Override
 	public List<ServiceCategory> getAllServiceCategories() {

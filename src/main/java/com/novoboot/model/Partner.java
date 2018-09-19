@@ -2,6 +2,7 @@ package com.novoboot.model;
 
 public class Partner extends BaseDto {
 	private long id;
+	private long serviceMasterId;
 	private String partnerName;
 	private String email;
 	private String contactNumber;
@@ -43,6 +44,12 @@ public class Partner extends BaseDto {
 	}
 	public void setMessage(String message) {
 		this.message = message;
+	}
+	public long getServiceMasterId() {
+		return serviceMasterId;
+	}
+	public void setServiceMasterId(long serviceMasterId) {
+		this.serviceMasterId = serviceMasterId;
 	}
 
 }

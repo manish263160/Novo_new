@@ -63,9 +63,9 @@ public class BookingServicesImpl implements BookingService {
 	@Value("${sms.authkey}")
 	private String smsauthkey;
 
-	public List<ServiceCategory> getAllServicesDetails() {
+	/*public List<ServiceCategory> getAllServicesDetails() {
 		return servicesDao.getAllServicesDetails();
-	}
+	}*/
 
 	public List<ServiceCategory> getAllServiceCategories() {
 		return servicesDao.getAllServiceCategories();
@@ -77,18 +77,20 @@ public class BookingServicesImpl implements BookingService {
 
 	public List<ServiceModel> getAllServices() {
 		List<ServiceModel> services = servicesDao.getAllServices();
-		if (services != null && services.size() > 0) {
+		/*if (services != null && services.size() > 0) {
 			for (ServiceModel service : services) {
 				if (CommonEnums.ServiceType.BOOK.type() == service.getServiceType()) {
 					service.setServiceCosts(getServicesCostById(service.getId()));
 				}
 			}
-		}
+		}*/
 		return services;
 	}
 
 	public List<ServiceCost> getServicesCostById(long serviceId) {
-		return servicesDao.getServicesCostById(serviceId);
+		List<ServiceCost> list= servicesDao.getServicesCostById(serviceId);
+		
+		return list;
 	}
 
 	@Transactional(rollbackFor = Throwable.class)

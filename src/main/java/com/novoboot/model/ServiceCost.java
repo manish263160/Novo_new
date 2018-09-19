@@ -8,70 +8,68 @@ package com.novoboot.model;
 public class ServiceCost extends BaseDto {
 	
 	private long id;
-	private long serviceId;
-	private String costDetails;
-	private double 	price;
+	private long serviceMasterId;
+	private String userInputs;
+	private int unitPrice;
+	private int isExtras;
+	private int windowType;
 	private int status;
-	
-	/**
-	 * @return the id
-	 */
+	private String windowText;
+	private String umitName;
 	public long getId() {
 		return id;
 	}
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(long id) {
-		this.id = id;
+	public long getServiceMasterId() {
+		return serviceMasterId;
 	}
-	/**
-	 * @return the serviceId
-	 */
-	public long getServiceId() {
-		return serviceId;
+	public String getUserInputs() {
+		return userInputs;
 	}
-	/**
-	 * @param serviceId the serviceId to set
-	 */
-	public void setServiceId(long serviceId) {
-		this.serviceId = serviceId;
+	public int getUnitPrice() {
+		return unitPrice;
 	}
-	/**
-	 * @return the costDetails
-	 */
-	public String getCostDetails() {
-		return costDetails;
+	public int getIsExtras() {
+		return isExtras;
 	}
-	/**
-	 * @param costDetails the costDetails to set
-	 */
-	public void setCostDetails(String costDetails) {
-		this.costDetails = costDetails;
+	public int getWindowType() {
+		return windowType;
 	}
-	/**
-	 * @return the price
-	 */
-	public double getPrice() {
-		return price;
-	}
-	/**
-	 * @param price the price to set
-	 */
-	public void setPrice(double price) {
-		this.price = price;
-	}
-	/**
-	 * @return the status
-	 */
 	public int getStatus() {
 		return status;
 	}
-	/**
-	 * @param status the status to set
-	 */
+	public String getWindowText() {
+		return windowText;
+	}
+	public String getUmitName() {
+		return umitName;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public void setServiceMasterId(long serviceMasterId) {
+		this.serviceMasterId = serviceMasterId;
+	}
+	public void setUserInputs(String userInputs) {
+		this.userInputs = userInputs;
+	}
+	public void setUnitPrice(int unitPrice) {
+		this.unitPrice = unitPrice;
+	}
+	public void setIsExtras(int isExtras) {
+		this.isExtras = isExtras;
+	}
+	public void setWindowType(int windowType) {
+		this.windowType = windowType;
+	}
 	public void setStatus(int status) {
 		this.status = status;
 	}
+	public void setWindowText(String windowText) {
+		this.windowText = windowText;
+	}
+	public void setUmitName(String umitName) {
+		this.umitName = umitName;
+	}
+	
 
 }
