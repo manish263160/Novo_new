@@ -15,7 +15,7 @@ public class ServiceCost extends BaseDto {
 	private int windowType;
 	private int status;
 	private String windowText;
-	private String umitName;
+	private String unitName;
 	public long getId() {
 		return id;
 	}
@@ -40,8 +40,8 @@ public class ServiceCost extends BaseDto {
 	public String getWindowText() {
 		return windowText;
 	}
-	public String getUmitName() {
-		return umitName;
+	public String getUnitName() {
+		return unitName;
 	}
 	public void setId(long id) {
 		this.id = id;
@@ -67,8 +67,8 @@ public class ServiceCost extends BaseDto {
 	public void setWindowText(String windowText) {
 		this.windowText = windowText;
 	}
-	public void setUmitName(String umitName) {
-		this.umitName = umitName;
+	public void setUnitName(String umitName) {
+		this.unitName = umitName;
 	}
 	
 
