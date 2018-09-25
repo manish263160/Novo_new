@@ -29,7 +29,7 @@ public class CronJobs {
 	private static final Logger logger = Logger.getLogger(CronJobs.class);
 	
 //	@RequestMapping(method = RequestMethod.POST, value = "/insertDateSlot")
-	@Scheduled(cron = "0 0 23 * * *")
+//	@Scheduled(cron = "0 0 23 * * *")
 //	@Scheduled(fixedDelay =5000)
 	public void insertDateSlot() {
 	logger.info("--------------------------call task scheduler=======");
