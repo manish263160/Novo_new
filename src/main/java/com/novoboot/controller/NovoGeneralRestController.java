@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.novoboot.model.ServiceModel;
 import com.novoboot.model.User;
+import com.novoboot.service.GeneralRestCallService;
 import com.novoboot.service.UserService;
  
 @RestController
@@ -21,6 +23,8 @@ public class NovoGeneralRestController {
     @Autowired
     UserService userService;  //Service which will do all data retrieval/manipulation work
  
+    @Autowired
+    GeneralRestCallService generalRestCallService;
     
     //-------------------Retrieve All Users--------------------------------------------------------
      
@@ -98,5 +102,14 @@ public class NovoGeneralRestController {
         userService.deleteAllUsers();
         return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
     }
+    
+    @RequestMapping(value = "/search/{searchText}", method = RequestMethod.GET)
+    public ResponseEntity<ServiceModel> searchService(@PathVariable(required=false) String searchText) {
+        System.out.println("Deleting All Users");
+ 
+       List<ServiceModel> list= generalRestCallService.searchService(searchText);
+        return new ResponseEntity<ServiceModel>(HttpStatus.NO_CONTENT);
+    }
+       
  
 }
