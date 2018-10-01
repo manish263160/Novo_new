@@ -34,9 +34,9 @@ public class PackageDaoImpl extends NovoJdbcTemplate implements PackageDao {
 
 	@Override
 	public List<PackageCost> getPackageCost(long packageMasterId) {
-		String query = "select * from packages_cost_master where packages_master_id=?";
+		String query = "select * from packages_cost_master where packages_master_id=? ";
 		 return getJdbcTemplate().query(query,
-				new BeanPropertyRowMapper<PackageCost>(PackageCost.class),packageMasterId, STATUS.ACTIVE.ID);
+				new BeanPropertyRowMapper<PackageCost>(PackageCost.class),packageMasterId);
 	}
 
 }
