@@ -7,7 +7,7 @@ public interface PaymentDao {
 
 	void inserstPaymentSuccessFull(WebHookModel webHookModel);
 
-	boolean insertUserBooking(UserBookingDetails userBookingDetails);
+	void insertUserBooking(UserBookingDetails userBookingDetails);
 
 	void updateUserBookingDetails(String paymentId, String paymentReqstId, String orderStatus);
 

@@ -262,7 +262,7 @@ public class PaymentServiceImpl implements PaymentService {
 							extraservices.toString(), STATUS.INACTIVE.ID, amount, couponApplied, userAddress, pinCode,
 							city, bookingDate, bookingTime, BOOKINGSTATUS.INACTIVE.getBookingStatus());
 
-					boolean bool = paymentDao.insertUserBooking(userBookingDetails);
+					paymentDao.insertUserBooking(userBookingDetails);
 				}
 
 			}

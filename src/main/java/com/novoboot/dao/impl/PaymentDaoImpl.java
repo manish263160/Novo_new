@@ -57,14 +57,13 @@ public class PaymentDaoImpl extends NovoJdbcTemplate implements PaymentDao {
 	}
 
 	@Override
-	public boolean insertUserBooking(UserBookingDetails userBookingDetails) {
+	public void insertUserBooking(UserBookingDetails userBookingDetails) {
 		boolean returnbool = false;
 		logger.info("userBookingDetails==="+userBookingDetails.toString());
 		String query = "INSERT INTO user_booking_details (payment_request_id,transaction_id,user_id,consumer_email,service_cat_id,service_master_id,service_cost_id_list,"
 				+ " service_cat_name,service_name,combo_packages,extra_packages,status,total_amount,coupon_applied,"
 				+ " user_address,pin_code,city,booking_date,booking_time,consumer_name,consumer_phone,booking_status,created_on,"
 				+ " created_by ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),?);";
-		KeyHolder keyHolder = new GeneratedKeyHolder();
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
@@ -96,11 +95,8 @@ public class PaymentDaoImpl extends NovoJdbcTemplate implements PaymentDao {
 				pstmt.setString(index++, userBookingDetails.getConsumerName());
 				return pstmt;
 			}
-		}, keyHolder);
-		if(keyHolder != null && keyHolder.getKey().intValue() >= 0) {
-			returnbool = true;
-		}
-		return returnbool;
+		});
+		
 	}
 
 	@Override
