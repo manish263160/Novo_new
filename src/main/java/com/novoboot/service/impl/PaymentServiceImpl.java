@@ -298,5 +298,19 @@ public class PaymentServiceImpl implements PaymentService {
 			comboPackage.put(key, value);
 		}
 	}
+
+	@Override
+	public boolean onPaymentSuccessHandler(String paymentId, String status) {
+		if(paymentId != null) {
+			
+		}
+		return false;
+	}
+
+	@Override
+	public boolean onPaymentFailureHandler(String paymentId, String status) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }

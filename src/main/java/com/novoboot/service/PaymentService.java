@@ -15,4 +15,8 @@ public interface PaymentService {
 
 	CreatePaymentOrderResponse userBooking(String paymentOrder);
 
+	boolean onPaymentSuccessHandler(String paymentId, String status);
+
+	boolean onPaymentFailureHandler(String paymentId, String status);
+
 }

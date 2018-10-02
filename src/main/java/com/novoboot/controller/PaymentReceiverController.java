@@ -47,8 +47,5 @@ public class PaymentReceiverController {
 		
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/paymentRedirectUrl")
-	private void getpaymentRedirectUrl(@RequestParam(value="payment_request_id ") String payment_request_id , @RequestParam(value="payment_id") String payment_id) {
-		logger.info("getpaymentRedirectUrl :: payment_request_id"+payment_request_id+" payment_id ::"+payment_id);
-	}
+	
 }

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.novoboot.Enums.RESPONSE_CODES;
@@ -46,5 +47,18 @@ public class PaymentController {
 				RESPONSE_CODES.SUCCESS.getDescription(), RESPONSE_CODES.SUCCESS.getCode());
 	}
 
-
+	@RequestMapping(method = RequestMethod.GET, value = "/onPaymentSuccessHandler")
+	private ResponseObject onPaymentSuccessHandler(@RequestParam(value="paymentId ") String paymentId , @RequestParam(value="status") String status) {
+		logger.info("onPaymentSuccessHandler :: paymentId"+paymentId+" status ::"+status);
+		boolean bool=paymentService.onPaymentSuccessHandler(paymentId,status);
+		return GenUtilities.getSuccessResponseObject("TRUE",
+				RESPONSE_CODES.SUCCESS.getDescription(), RESPONSE_CODES.SUCCESS.getCode());
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/onPaymentFailureHandler")
+	private ResponseObject onPaymentFailureHandler(@RequestParam(value="paymentId ") String paymentId , @RequestParam(value="status") String status) {
+		logger.info("onPaymentFailureHandler :: paymentId"+paymentId+" status ::"+status);
+		boolean bool=paymentService.onPaymentFailureHandler(paymentId,status);
+		return GenUtilities.getFailureResponseObject("FALSE",RESPONSE_CODES.FAIL.getDescription(), RESPONSE_CODES.FAIL.getCode(), "");
+	}
 }
