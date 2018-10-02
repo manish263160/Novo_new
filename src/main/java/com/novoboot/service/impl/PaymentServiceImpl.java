@@ -88,8 +88,8 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 	@Transactional
 	public void inserstPaymentSuccessFull(WebHookModel webHookModel) {
-		String paymentId = webHookModel.getPaymentId();
-		String PaymentReqstId = webHookModel.getPaymentRequestId();
+		String paymentId = webHookModel.getPayment_id();
+		String PaymentReqstId = webHookModel.getPayment_request_id();
 		logger.info("payment Id and paymentRequest id =="+paymentId +" & "+PaymentReqstId);
 		try {
 			PaymentOrderDetailsResponse paymentOrderDetailsResponse = getApi().getPaymentOrderDetails(PaymentReqstId);
