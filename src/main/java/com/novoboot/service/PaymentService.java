@@ -13,4 +13,6 @@ public interface PaymentService {
 
 	void inserstPaymentSuccessFull(WebHookModel webHookModel);
 
+	CreatePaymentOrderResponse userBooking(String paymentOrder);
+
 }

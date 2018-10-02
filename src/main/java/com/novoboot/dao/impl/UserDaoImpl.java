@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository;
 import com.novoboot.Enums.BASIC_STRINGS;
 import com.novoboot.Enums.CommonEnums.STATUS;
 import com.novoboot.Enums.CommonEnums.USER_TYPE;
-import com.novoboot.Enums.CommonEnums.UserRoleType;
+import com.novoboot.Enums.CommonEnums.BOOKINGSTATUS;
 import com.novoboot.dao.UserDao;
 import com.novoboot.jdbcTemplate.NovoJdbcTemplate;
 import com.novoboot.model.User;

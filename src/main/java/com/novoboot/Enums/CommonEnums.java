@@ -13,12 +13,12 @@ public class CommonEnums {
 		}
 	}
 
-	public enum ServiceCategory {
+	public enum ServiceCategoryEnum {
 		HOME(1), OFFICE(0);
 
 		private final int category;
 
-		ServiceCategory(int category) {
+		ServiceCategoryEnum(int category) {
 			this.category = category;
 		}
 
@@ -75,5 +75,20 @@ public class CommonEnums {
 		SERVICE_WINDOW(int id) {
 			this.ID = id;
 		}
+	}
+	
+	public enum BOOKINGSTATUS implements Serializable {
+		SUCCESSFULL("SUCCESSFULL"), INACTIVE("INACTIVE"),FAIL("FAIL"); 
+
+		String bookingStatus;
+
+		private BOOKINGSTATUS(String bookingStatus) {
+			this.bookingStatus = bookingStatus;
+		}
+
+		public String getBookingStatus() {
+			return bookingStatus;
+		}
+
 	}
 }
