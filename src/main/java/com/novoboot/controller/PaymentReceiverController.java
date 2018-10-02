@@ -33,9 +33,9 @@ public class PaymentReceiverController {
 	UserService userService;
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/webhookGet" , consumes=MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	private void getResponse(@ModelAttribute WebHookModel webHookModel) {
+	private void getResponse(@RequestBody String webHookModel) {
 		logger.info("WebHookModel ===="+webHookModel.toString());
-		String userMobile = webHookModel.getBuyer_phone();
+		/*String userMobile = webHookModel.getBuyer_phone();
 		if(userMobile != null) {
 			if(userMobile.contains("+91")) {
 				logger.info("mobile number contains +91");
@@ -47,7 +47,7 @@ public class PaymentReceiverController {
 					webHookModel.setUserId(user.getId());
 					paymentService.inserstPaymentSuccessFull(webHookModel);
 				}
-		}
+		}*/
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/paymentRedirectUrl")
