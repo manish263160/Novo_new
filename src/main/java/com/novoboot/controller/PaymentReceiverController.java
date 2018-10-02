@@ -33,8 +33,9 @@ public class PaymentReceiverController {
 	UserService userService;
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/webhookGet" , consumes=MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	private void getResponse(@RequestBody String webHookModel) {
-		logger.info("WebHookModel ===="+webHookModel.toString());
+	private void getResponse(@RequestParam("id") String id ,@RequestParam("transaction_id") String transactionId ,
+			@RequestParam("payment_id") String paymentId ,@RequestParam("status") String status , @RequestParam("amount") String amount , @RequestParam("mac") String mac ) {
+		logger.info("WebHookModel ==id "+id +" transactionId"+transactionId+" paymentId="+paymentId+" status="+status+" amount="+amount+" mac="+mac);
 		/*String userMobile = webHookModel.getBuyer_phone();
 		if(userMobile != null) {
 			if(userMobile.contains("+91")) {
