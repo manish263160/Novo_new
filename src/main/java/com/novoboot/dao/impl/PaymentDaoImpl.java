@@ -39,13 +39,13 @@ public class PaymentDaoImpl extends NovoJdbcTemplate implements PaymentDao {
 				pstmt.setLong(index++, webHookModel.getUserId());
 				pstmt.setString(index++, webHookModel.getAmount());
 				pstmt.setString(index++, webHookModel.getBuyer());
-				pstmt.setString(index++, webHookModel.getBuyerName());
+				pstmt.setString(index++, webHookModel.getBuyer_name());
 				pstmt.setString(index++, webHookModel.getCurrency());
 				pstmt.setString(index++, webHookModel.getFees());
 				pstmt.setString(index++, webHookModel.getLongurl());
 				pstmt.setString(index++, webHookModel.getMac());
-				pstmt.setString(index++, webHookModel.getPaymentId());
-				pstmt.setString(index++, webHookModel.getPaymentRequestId());
+				pstmt.setString(index++, webHookModel.getPayment_id());
+				pstmt.setString(index++, webHookModel.getPayment_request_id());
 				pstmt.setString(index++, webHookModel.getPurpose());
 				pstmt.setString(index++, webHookModel.getShorturl());
 				pstmt.setString(index++, webHookModel.getStatus());

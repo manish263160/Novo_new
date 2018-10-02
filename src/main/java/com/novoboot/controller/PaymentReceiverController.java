@@ -33,7 +33,7 @@ public class PaymentReceiverController {
 	@RequestMapping(method = RequestMethod.POST, value = "/webhookGet" , consumes=MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	private void getResponse(WebHookModel webHookModel) {
 		logger.info("WebHookModel ===="+webHookModel.toString());
-		String userMobile = webHookModel.getBuyerPhone();
+		String userMobile = webHookModel.getBuyer_phone();
 		if(userMobile != null) {
 				User user= userService.findUserByMobile(userMobile);
 				if(user != null) {

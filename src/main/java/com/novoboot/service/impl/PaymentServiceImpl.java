@@ -88,18 +88,19 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 	@Transactional
 	public void inserstPaymentSuccessFull(WebHookModel webHookModel) {
-		String paymentId = webHookModel.getPaymentId();
-		String PaymentReqstId = webHookModel.getPaymentRequestId();
-
+		String paymentId = webHookModel.getPayment_id();
+		String PaymentReqstId = webHookModel.getPayment_request_id();
+		logger.info("payment Id and paymentRequest id =="+paymentId +" & "+PaymentReqstId);
 		try {
 			PaymentOrderDetailsResponse paymentOrderDetailsResponse = getApi().getPaymentOrderDetails(PaymentReqstId);
+			logger.info("paymentOrderDetailsResponse==="+paymentOrderDetailsResponse.toString());
 			String orderStatus = paymentOrderDetailsResponse.getStatus();
 			
 			Payment[] payment = paymentOrderDetailsResponse.getPayments();
 			if (paymentOrderDetailsResponse.getId() != null) {
 				// print the status of the payment order.
 				logger.info(paymentOrderDetailsResponse.getStatus());
-				if(payment != null && orderStatus.equals("Completed")) {
+				if(payment != null) {
 					paymentDao.updateUserBookingDetails(paymentId,PaymentReqstId,orderStatus);
 				}
 			} else {
