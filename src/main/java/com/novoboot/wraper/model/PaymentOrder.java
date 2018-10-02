@@ -559,10 +559,10 @@ public class PaymentOrder implements Serializable {
             this.setDescriptionInvalid(true);
         }
 
-		if (TextUtils.isEmpty(redirectUrl) || !redirectUrl.matches(URL_MATCHER)) {
+		/*if (TextUtils.isEmpty(redirectUrl) || !redirectUrl.matches(URL_MATCHER)) {
             valid = false;
             this.setRedirectUrlInvalid(true);
-		}
+		}*/
 
 		if (!TextUtils.isEmpty(webhookUrl) && !webhookUrl.matches(URL_MATCHER)){
             valid = false;

@@ -206,7 +206,7 @@ public class PaymentServiceImpl implements PaymentService {
 				order.setCurrency(currency);
 				order.setAmount(10.0d);
 				order.setDescription(description);
-				order.setRedirectUrl(applicationProperties.getProperty("instamojo_redirecturl"));
+//				order.setRedirectUrl(applicationProperties.getProperty("instamojo_redirecturl"));
 				order.setWebhookUrl(applicationProperties.getProperty("instamojo_webhookurl"));
 				order.setTransactionId(transactionId);
 
