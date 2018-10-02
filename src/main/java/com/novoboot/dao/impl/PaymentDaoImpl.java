@@ -27,8 +27,8 @@ public class PaymentDaoImpl extends NovoJdbcTemplate implements PaymentDao {
 	public void inserstPaymentSuccessFull(WebHookModel webHookModel) {
 
 		logger.info("paymentDaoimpl webhookmodel =" + webHookModel.toString());
-		String sql = "INSERT INTO user_payment(user_id,amount,buyer,buyer_name,buyer_phone,currency,fees,longurl,mac,payment_id,payment_request_id,transaction_id,purpose,shorturl,status) "
-				+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+		String sql = "INSERT INTO user_payment(payment_request_id,user_id,amount,buyer,buyer_name,buyer_phone,mac,payment_id,transaction_id,status) "
+				+ "VALUES (?,?,?,?,?,?,?,?,?,?);";
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 			@Override
@@ -36,19 +36,20 @@ public class PaymentDaoImpl extends NovoJdbcTemplate implements PaymentDao {
 				PreparedStatement pstmt = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 				int index = 1;
 				// service_id,service_cost_id,service_date,house,landmark,locality,name,phone,email,status,created_on,created_by
+				pstmt.setString(index++, webHookModel.getPayment_request_id());
 				pstmt.setLong(index++, webHookModel.getUserId());
 				pstmt.setString(index++, webHookModel.getAmount());
 				pstmt.setString(index++, webHookModel.getBuyer());
 				pstmt.setString(index++, webHookModel.getBuyer_name());
-				pstmt.setString(index++, webHookModel.getCurrency());
-				pstmt.setString(index++, webHookModel.getFees());
-				pstmt.setString(index++, webHookModel.getLongurl());
+				pstmt.setString(index++, webHookModel.getBuyer_phone());
+//				pstmt.setString(index++, webHookModel.getCurrency());
+//				pstmt.setString(index++, webHookModel.getFees());
+//				pstmt.setString(index++, webHookModel.getLongurl());
 				pstmt.setString(index++, webHookModel.getMac());
 				pstmt.setString(index++, webHookModel.getPayment_id());
-				pstmt.setString(index++, webHookModel.getPayment_request_id());
 				pstmt.setString(index++, webHookModel.getTransactionId());
-				pstmt.setString(index++, webHookModel.getPurpose());
-				pstmt.setString(index++, webHookModel.getShorturl());
+//				pstmt.setString(index++, webHookModel.getPurpose());
+//				pstmt.setString(index++, webHookModel.getShorturl());
 				pstmt.setString(index++, webHookModel.getStatus());
 				return pstmt;
 			}

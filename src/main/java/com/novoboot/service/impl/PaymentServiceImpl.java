@@ -103,6 +103,7 @@ public class PaymentServiceImpl implements PaymentService {
 			
 			logger.info("paymentOrderDetailsResponse==="+paymentOrderDetailsResponse.toString());
 			String orderStatus = paymentOrderDetailsResponse.getStatus();
+			webHookModel.setStatus(orderStatus);
 			String userMobile = paymentOrderDetailsResponse.getPhone();
 			logger.info("mobile number before=="+userMobile);
 			if(userMobile != null) {
