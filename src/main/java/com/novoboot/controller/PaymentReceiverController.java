@@ -37,6 +37,11 @@ public class PaymentReceiverController {
 		logger.info("WebHookModel ===="+webHookModel.toString());
 		String userMobile = webHookModel.getBuyer_phone();
 		if(userMobile != null) {
+			if(userMobile.contains("+91")) {
+				logger.info("mobile number contains +91");
+				userMobile = userMobile.replaceAll("+91", "");
+			}
+			logger.info("mobile number "+userMobile);
 				User user= userService.findUserByMobile(userMobile);
 				if(user != null) {
 					webHookModel.setUserId(user.getId());
