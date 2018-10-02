@@ -11,7 +11,7 @@ public class WebHookModel implements Serializable {
 	private long userId;
 	private String amount;
 	private String buyer;
-	
+	private String transactionId;
 	private String buyer_name;
 	private String buyer_phone;
 	private String currency;
@@ -113,5 +113,11 @@ public class WebHookModel implements Serializable {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public String getTransactionId() {
+		return transactionId;
+	}
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
 	}
 }

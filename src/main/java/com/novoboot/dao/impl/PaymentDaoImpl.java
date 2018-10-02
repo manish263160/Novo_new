@@ -27,8 +27,8 @@ public class PaymentDaoImpl extends NovoJdbcTemplate implements PaymentDao {
 	public void inserstPaymentSuccessFull(WebHookModel webHookModel) {
 
 		logger.info("paymentDaoimpl webhookmodel =" + webHookModel.toString());
-		String sql = "INSERT INTO user_payment(user_id,amount,buyer,buyer_name,buyer_phone,currency,fees,longurl,mac,payment_id,payment_request_id,purpose,shorturl,status) "
-				+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+		String sql = "INSERT INTO user_payment(user_id,amount,buyer,buyer_name,buyer_phone,currency,fees,longurl,mac,payment_id,payment_request_id,transaction_id,purpose,shorturl,status) "
+				+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 			@Override
@@ -46,6 +46,7 @@ public class PaymentDaoImpl extends NovoJdbcTemplate implements PaymentDao {
 				pstmt.setString(index++, webHookModel.getMac());
 				pstmt.setString(index++, webHookModel.getPayment_id());
 				pstmt.setString(index++, webHookModel.getPayment_request_id());
+				pstmt.setString(index++, webHookModel.getTransactionId());
 				pstmt.setString(index++, webHookModel.getPurpose());
 				pstmt.setString(index++, webHookModel.getShorturl());
 				pstmt.setString(index++, webHookModel.getStatus());

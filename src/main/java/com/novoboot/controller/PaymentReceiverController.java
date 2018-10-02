@@ -36,19 +36,15 @@ public class PaymentReceiverController {
 	private void getResponse(@RequestParam("id") String id ,@RequestParam("transaction_id") String transactionId ,
 			@RequestParam("payment_id") String paymentId ,@RequestParam("status") String status , @RequestParam("amount") String amount , @RequestParam("mac") String mac ) {
 		logger.info("WebHookModel ==id "+id +" transactionId"+transactionId+" paymentId="+paymentId+" status="+status+" amount="+amount+" mac="+mac);
-		/*String userMobile = webHookModel.getBuyer_phone();
-		if(userMobile != null) {
-			if(userMobile.contains("+91")) {
-				logger.info("mobile number contains +91");
-				userMobile = userMobile.replaceAll("+91", "");
-			}
-			logger.info("mobile number "+userMobile);
-				User user= userService.findUserByMobile(userMobile);
-				if(user != null) {
-					webHookModel.setUserId(user.getId());
-					paymentService.inserstPaymentSuccessFull(webHookModel);
-				}
-		}*/
+		WebHookModel webHookModel= new WebHookModel();
+		webHookModel.setPayment_request_id(id);
+		webHookModel.setPayment_id(paymentId);
+		webHookModel.setAmount(amount);
+		webHookModel.setMac(mac);
+		webHookModel.setStatus(status);
+		webHookModel.setTransactionId(transactionId);
+		paymentService.inserstPaymentSuccessFull(webHookModel);
+		
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/paymentRedirectUrl")

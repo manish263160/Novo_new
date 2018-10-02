@@ -19,8 +19,10 @@ import org.springframework.stereotype.Service;
 import com.novoboot.Enums.CommonEnums.BOOKINGSTATUS;
 import com.novoboot.Enums.CommonEnums.STATUS;
 import com.novoboot.dao.PaymentDao;
+import com.novoboot.model.User;
 import com.novoboot.model.UserBookingDetails;
 import com.novoboot.service.PaymentService;
+import com.novoboot.service.UserService;
 import com.novoboot.utils.ApplicationProperties;
 import com.novoboot.wraper.model.Payment;
 import com.novoboot.wraper.model.PaymentOrder;
@@ -43,6 +45,8 @@ public class PaymentServiceImpl implements PaymentService {
 	@Autowired
 	PaymentDao paymentDao;
 
+	@Autowired
+	UserService userService;
 	/**
 	 * This method will get the api related details with authtoken
 	 */
@@ -88,14 +92,31 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 	@Transactional
 	public void inserstPaymentSuccessFull(WebHookModel webHookModel) {
+		
+		
 		String paymentId = webHookModel.getPayment_id();
 		String PaymentReqstId = webHookModel.getPayment_request_id();
 		logger.info("payment Id and paymentRequest id =="+paymentId +" & "+PaymentReqstId);
+		PaymentOrderDetailsResponse paymentOrderDetailsResponse =null;
 		try {
-			PaymentOrderDetailsResponse paymentOrderDetailsResponse = getApi().getPaymentOrderDetails(PaymentReqstId);
+			paymentOrderDetailsResponse = getApi().getPaymentOrderDetails(PaymentReqstId);
+			
 			logger.info("paymentOrderDetailsResponse==="+paymentOrderDetailsResponse.toString());
 			String orderStatus = paymentOrderDetailsResponse.getStatus();
-			
+			String userMobile = paymentOrderDetailsResponse.getPhone();
+			logger.info("mobile number before=="+userMobile);
+			if(userMobile != null) {
+				if(userMobile.contains("+91")) {
+					logger.info("mobile number contains +91");
+					userMobile = userMobile.substring(3);
+					webHookModel.setBuyer_phone(userMobile);
+				}
+				logger.info("mobile number after=="+userMobile);
+					User user= userService.findUserByMobile(userMobile);
+					if(user != null) {
+						webHookModel.setUserId(user.getId());
+					}
+			}
 			Payment[] payment = paymentOrderDetailsResponse.getPayments();
 			if (paymentOrderDetailsResponse.getId() != null) {
 				// print the status of the payment order.
@@ -103,12 +124,16 @@ public class PaymentServiceImpl implements PaymentService {
 				if(payment != null) {
 					paymentDao.updateUserBookingDetails(paymentId,PaymentReqstId,orderStatus);
 				}
+//				paymentOrderDetailsResponse.get
 			} else {
-				logger.info(" order id is invalid.");
+				logger.error(" order id is invalid.");
 			}
+			webHookModel.setBuyer(paymentOrderDetailsResponse.getEmail());
+			webHookModel.setBuyer_name(paymentOrderDetailsResponse.getName());
 		} catch (ConnectionException e) {
 			logger.error(e.toString(), e);
 		}
+		
 		paymentDao.inserstPaymentSuccessFull(webHookModel);
 
 	}
@@ -272,4 +297,5 @@ public class PaymentServiceImpl implements PaymentService {
 			comboPackage.put(key, value);
 		}
 	}
+	
 }
