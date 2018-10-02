@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,9 +32,9 @@ public class PaymentReceiverController {
 	UserService userService;
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/webhookGet" , consumes=MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	private void getResponse(WebHookModel webHookModel) {
+	private void getResponse(@RequestBody WebHookModel webHookModel) {
 		logger.info("WebHookModel ===="+webHookModel.toString());
-		String userMobile = webHookModel.getBuyer_phone();
+		String userMobile = webHookModel.getBuyerPhone();
 		if(userMobile != null) {
 				User user= userService.findUserByMobile(userMobile);
 				if(user != null) {
