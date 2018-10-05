@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public enum BASIC_STRINGS implements Serializable{
 
-	SYSTEM("SYSTEM"),USER("USER"), DEFAULT_USER("DEFAULT_USER");
+	SYSTEM("SYSTEM"),USER("USER"), DEFAULT_USER("DEFAULT_USER"), SERVICE("service") , PACKAGE("package");
 	
 	String stringName;
 

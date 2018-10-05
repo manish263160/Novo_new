@@ -77,7 +77,49 @@ public class PaymentOrder implements Serializable {
     private boolean redirectUrlInvalid;
     private boolean webhookInvalid;
 
-    /**
+    private String purpose;
+    
+    @SerializedName("send_email")
+    private String sendEmail;
+    
+    @SerializedName("send_sms")
+    private String sendSms;
+    
+    @SerializedName("allow_repeated_payments")
+    private String allowRepeatedPayments;
+    public String getPurpose() {
+		return purpose;
+	}
+
+	public String getSendEmail() {
+		return sendEmail;
+	}
+
+	public String getSendSms() {
+		return sendSms;
+	}
+
+	public String getAllowRepeatedPayments() {
+		return allowRepeatedPayments;
+	}
+
+	public void setPurpose(String purpose) {
+		this.purpose = purpose;
+	}
+
+	public void setSendEmail(String sendEmail) {
+		this.sendEmail = sendEmail;
+	}
+
+	public void setSendSms(String sendSms) {
+		this.sendSms = sendSms;
+	}
+
+	public void setAllowRepeatedPayments(String allowRepeatedPayments) {
+		this.allowRepeatedPayments = allowRepeatedPayments;
+	}
+
+	/**
      * Gets the id.
      *
      * @return the id

@@ -1,5 +1,6 @@
 package com.novoboot.service.impl;
 
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,11 +17,13 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.novoboot.Enums.BASIC_STRINGS;
 import com.novoboot.Enums.CommonEnums.BOOKINGSTATUS;
 import com.novoboot.Enums.CommonEnums.STATUS;
 import com.novoboot.dao.PaymentDao;
 import com.novoboot.model.User;
 import com.novoboot.model.UserBookingDetails;
+import com.novoboot.model.UserPackageBookingDetails;
 import com.novoboot.service.PaymentService;
 import com.novoboot.service.UserService;
 import com.novoboot.utils.ApplicationProperties;
@@ -72,7 +75,7 @@ public class PaymentServiceImpl implements PaymentService {
 		try {
 			CreatePaymentOrderResponse createPaymentOrderResponse = api.createNewPaymentOrder(order);
 			// print the status of the payment order.
-			logger.info("createPaymentOrderResponse :: " + createPaymentOrderResponse.getPaymentOrder().getStatus());
+			logger.info("createPaymentOrderResponse :: " + createPaymentOrderResponse.getStatus());
 			return createPaymentOrderResponse;
 		} catch (InvalidPaymentOrderException e) {
 			logger.error(e.toString());
@@ -140,7 +143,7 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public CreatePaymentOrderResponse userBooking(String paymentOrder) {
+	public CreatePaymentOrderResponse userBooking(String paymentOrder ,String frombooking) {
 		CreatePaymentOrderResponse createPaymentOrderResponse = null;
 		JSONObject json = null;
 		try {
@@ -158,15 +161,15 @@ public class PaymentServiceImpl implements PaymentService {
 
 				JSONObject selectedServices = (JSONObject) json.get("selectedServices");
 				Long serviceCatId = ((JSONObject) selectedServices.get("mainService")).getLong("id");
-				String serviceCatName = ((JSONObject) selectedServices.get("mainService")).getString("catName");
+				String serviceCatName = frombooking.equals(BASIC_STRINGS.SERVICE.getStringName()) ? ((JSONObject) selectedServices.get("mainService")).getString("catName") : ((JSONObject) selectedServices.get("mainService")).getString("packageName");
 				Long serviceMasterId = ((JSONObject) selectedServices.get("subService")).getLong("id");
-				String serviceName = ((JSONObject) selectedServices.get("subService")).getString("serviceName");
+				String serviceName = frombooking.equals(BASIC_STRINGS.SERVICE.getStringName()) ? ((JSONObject) selectedServices.get("subService")).getString("serviceName") : ((JSONObject) selectedServices.get("subService")).getString("packageName");
 				Map<String, Integer> serviceComboPackage = new LinkedHashMap<>();
 				Map<String, Integer> extraservices = new LinkedHashMap<>();
 				if (selectedServices != null) {
 					JSONArray mainPackages = null;
 					JSONArray extraPackages = null;
-					if (serviceCatId != 6) {
+					if ((frombooking.equals(BASIC_STRINGS.SERVICE.getStringName()) && serviceCatId != 6) || (frombooking.equals(BASIC_STRINGS.PACKAGE.getStringName()) && serviceCatId == 2)) {
 						mainPackages = selectedServices.getJSONArray("mainPackages");
 						extraPackages = selectedServices.getJSONArray("extraPackages");
 						extracted(mainPackages, serviceComboPackage, serviceCostIdList);
@@ -176,8 +179,8 @@ public class PaymentServiceImpl implements PaymentService {
 						logger.info("extraservices===" + extraservices.toString());
 					} else {
 						mainPackages = new JSONArray();
-						mainPackages.put(selectedServices.getJSONArray("type"));
-						mainPackages.put(selectedServices.getJSONArray("subType"));
+						mainPackages.put(selectedServices.getJSONObject("type"));
+						mainPackages.put(selectedServices.getJSONObject("subType"));
 						extracted(mainPackages, serviceComboPackage, serviceCostIdList);
 					}
 				}
@@ -209,7 +212,10 @@ public class PaymentServiceImpl implements PaymentService {
 //				order.setRedirectUrl(applicationProperties.getProperty("instamojo_redirecturl"));
 				order.setWebhookUrl(applicationProperties.getProperty("instamojo_webhookurl"));
 				order.setTransactionId(transactionId);
-
+				order.setPurpose(serviceCatName +" > "+serviceName);
+				order.setSendEmail("True");
+				order.setSendSms("True");
+				order.setAllowRepeatedPayments("False");
 				Instamojo api = getApi();
 
 				boolean isOrderValid = order.validate();
@@ -255,8 +261,9 @@ public class PaymentServiceImpl implements PaymentService {
 						logger.error("Provide a valid webhook url");
 					}
 				}
-				if (createPaymentOrderResponse != null && createPaymentOrderResponse.getPaymentOrder() != null) {
-					String PaymnetRequestId = createPaymentOrderResponse.getPaymentOrder().getId();
+				if (createPaymentOrderResponse != null && createPaymentOrderResponse.getId() != null) {
+					if(frombooking.equals(BASIC_STRINGS.SERVICE.getStringName())) {
+					String PaymnetRequestId = createPaymentOrderResponse.getId();
 					UserBookingDetails userBookingDetails = new UserBookingDetails(PaymnetRequestId, transactionId,
 							userId, name, phone, email, description, successUrl, failUrl, serviceCatId, serviceMasterId,
 							serviceCostIdList.toString(), serviceCatName, serviceName, serviceComboPackage.toString(),
@@ -264,6 +271,17 @@ public class PaymentServiceImpl implements PaymentService {
 							city, bookingDate, bookingTime, BOOKINGSTATUS.INACTIVE.getBookingStatus());
 
 					paymentDao.insertUserBooking(userBookingDetails);
+					}
+					else if(frombooking.equals(BASIC_STRINGS.PACKAGE.getStringName())) {
+						String paymnetRequestId = createPaymentOrderResponse.getId();
+						
+						UserPackageBookingDetails userPackageBookingDetails = new UserPackageBookingDetails(paymnetRequestId, transactionId, 
+								userId, email, name, phone, description, successUrl, failUrl, serviceCatId, serviceMasterId, 
+								serviceCostIdList.toString(), serviceCatName, serviceName, serviceComboPackage.toString(), extraservices.toString(), amount, couponApplied, userAddress, pinCode, city, 
+								null, null, BOOKINGSTATUS.INACTIVE.getBookingStatus());
+						userPackageBookingDetails =paymentDao.insertUserBookingPackage(userPackageBookingDetails);
+						int StoredId= userPackageBookingDetails.getId();
+					}
 				}
 
 			}
@@ -300,17 +318,26 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public boolean onPaymentSuccessHandler(String paymentId, String status) {
+	@Transactional
+	public boolean onPaymentSuccessFailerHandler(String paymentId, String status) {
 		if(paymentId != null) {
-			
+			if(status.equals("success")) {
+				status = "completed";
+			}else {
+				status = "pending";
+			}
+			try {
+				paymentDao.updateUserBookingDetailsByPaymentId(paymentId,status);
+				if(status.equals("completed"))
+				paymentDao.updateUserPaymentTableByPaymentId(paymentId,status);
+				return true;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return false;
 	}
 
-	@Override
-	public boolean onPaymentFailureHandler(String paymentId, String status) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
+		
 }

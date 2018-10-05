@@ -76,4 +76,9 @@ public class Constants {
 	 * The constant REFUND_API_PATH.
 	 */
 	public static final String REFUND_API_PATH = "payments/";
+	
+	/**
+	 * The constant PAYEMNT_REQUEST.
+	 */
+	public static final String PAYEMNT_REQUEST = "payment_requests/";
 }

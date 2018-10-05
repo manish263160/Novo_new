@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.novoboot.Enums.BASIC_STRINGS;
 import com.novoboot.Enums.RESPONSE_CODES;
 import com.novoboot.model.ResponseObject;
 import com.novoboot.service.PaymentService;
@@ -36,29 +37,36 @@ public class PaymentController {
 	
 
 	@RequestMapping(method = RequestMethod.POST, value = "/paymentRequest")
-	private ResponseObject getRequest(@RequestBody String paymentOrder) {
+	private ResponseObject paymentRequest(@RequestBody String paymentOrder) {
 
 		CreatePaymentOrderResponse createPaymentOrderResponse = null;
 		InstamojoImpl.ClearInstance();
+		String frombooking =BASIC_STRINGS.SERVICE.getStringName();
+		createPaymentOrderResponse = paymentService.userBooking(paymentOrder ,frombooking);
 		
-		createPaymentOrderResponse = paymentService.userBooking(paymentOrder);
+		return GenUtilities.getSuccessResponseObject(createPaymentOrderResponse,
+				RESPONSE_CODES.SUCCESS.getDescription(), RESPONSE_CODES.SUCCESS.getCode());
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/paymentRequestPackage")
+	private ResponseObject paymentRequestPackage(@RequestBody String paymentOrder) {
+
+		CreatePaymentOrderResponse createPaymentOrderResponse = null;
+		InstamojoImpl.ClearInstance();
+		String frombooking =BASIC_STRINGS.PACKAGE.getStringName();
+		createPaymentOrderResponse = paymentService.userBooking(paymentOrder , frombooking );
 		
 		return GenUtilities.getSuccessResponseObject(createPaymentOrderResponse,
 				RESPONSE_CODES.SUCCESS.getDescription(), RESPONSE_CODES.SUCCESS.getCode());
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/onPaymentSuccessHandler")
+	@RequestMapping(method = RequestMethod.POST, value = "/details")
 	private ResponseObject onPaymentSuccessHandler(@RequestParam(value="paymentId ") String paymentId , @RequestParam(value="status") String status) {
 		logger.info("onPaymentSuccessHandler :: paymentId"+paymentId+" status ::"+status);
-		boolean bool=paymentService.onPaymentSuccessHandler(paymentId,status);
-		return GenUtilities.getSuccessResponseObject("TRUE",
+		boolean bool=paymentService.onPaymentSuccessFailerHandler(paymentId,status);
+		return GenUtilities.getSuccessResponseObject(status,
 				RESPONSE_CODES.SUCCESS.getDescription(), RESPONSE_CODES.SUCCESS.getCode());
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/onPaymentFailureHandler")
-	private ResponseObject onPaymentFailureHandler(@RequestParam(value="paymentId ") String paymentId , @RequestParam(value="status") String status) {
-		logger.info("onPaymentFailureHandler :: paymentId"+paymentId+" status ::"+status);
-		boolean bool=paymentService.onPaymentFailureHandler(paymentId,status);
-		return GenUtilities.getFailureResponseObject("FALSE",RESPONSE_CODES.FAIL.getDescription(), RESPONSE_CODES.FAIL.getCode(), "");
-	}
+	
 }

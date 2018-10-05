@@ -13,10 +13,10 @@ public interface PaymentService {
 
 	void inserstPaymentSuccessFull(WebHookModel webHookModel);
 
-	CreatePaymentOrderResponse userBooking(String paymentOrder);
+	CreatePaymentOrderResponse userBooking(String paymentOrder, String frombooking);
 
-	boolean onPaymentSuccessHandler(String paymentId, String status);
+	boolean onPaymentSuccessFailerHandler(String paymentId, String status);
 
-	boolean onPaymentFailureHandler(String paymentId, String status);
+
 
 }

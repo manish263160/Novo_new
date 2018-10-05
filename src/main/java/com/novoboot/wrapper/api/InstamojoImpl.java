@@ -198,7 +198,7 @@ public class InstamojoImpl implements Instamojo {
         headers.put(Constants.AUTHORIZATION, getAuthorization());
         Map<String, String> params = new HashMap<>();
 
-        params.put("name", paymentOrder.getName());
+        params.put("buyer_name", paymentOrder.getName());
         params.put("email", paymentOrder.getEmail());
         params.put("phone", paymentOrder.getPhone());
         params.put("currency", paymentOrder.getCurrency());
@@ -207,13 +207,18 @@ public class InstamojoImpl implements Instamojo {
         params.put("transaction_id", paymentOrder.getTransactionId());
         params.put("redirect_url", paymentOrder.getRedirectUrl());
         params.put("webhook_url", paymentOrder.getWebhookUrl());
+        params.put("purpose", paymentOrder.getPurpose());
+        params.put("send_email", paymentOrder.getSendEmail());
+        params.put("send_sms", paymentOrder.getSendSms());
+        params.put("allow_repeated_payments", paymentOrder.getAllowRepeatedPayments());
 
         try {
-            String response = HttpUtils.sendPostRequest(this.getApiPath(Constants.PAYMENT_ORDER_API_PATH), headers,
+            String response = HttpUtils.sendPostRequest(this.getApiPath(Constants.PAYEMNT_REQUEST), headers,
                     params);
+            System.out.println("response==="+response);
             CreatePaymentOrderResponse createPaymentOrderResponse = JsonUtils.convertJsonStringToObject(response,
                     CreatePaymentOrderResponse.class);
-            if (createPaymentOrderResponse.getPaymentOrder() == null) {
+            if (createPaymentOrderResponse.getId() == null) {
                 Map<String, Object> map = JsonUtils.convertJsonStringToMap(response);
                 if (map != null && map.get(Constants.TRANSACTION_ID) != null) {
                     paymentOrder.setTransactionIdInvalid(true);
