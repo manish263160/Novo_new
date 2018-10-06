@@ -179,8 +179,12 @@ public class PaymentServiceImpl implements PaymentService {
 						logger.info("extraservices===" + extraservices.toString());
 					} else {
 						mainPackages = new JSONArray();
+						if(frombooking.equals(BASIC_STRINGS.SERVICE.getStringName())) {
 						mainPackages.put(selectedServices.getJSONObject("type"));
 						mainPackages.put(selectedServices.getJSONObject("subType"));
+						}else if(frombooking.equals(BASIC_STRINGS.PACKAGE.getStringName())){
+							mainPackages = selectedServices.getJSONArray("mainPackages");
+						}
 						extracted(mainPackages, serviceComboPackage, serviceCostIdList);
 					}
 				}

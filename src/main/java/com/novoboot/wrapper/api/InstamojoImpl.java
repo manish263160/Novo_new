@@ -206,7 +206,7 @@ public class InstamojoImpl implements Instamojo {
         params.put("description", paymentOrder.getDescription());
         params.put("transaction_id", paymentOrder.getTransactionId());
         params.put("redirect_url", paymentOrder.getRedirectUrl());
-        params.put("webhook_url", paymentOrder.getWebhookUrl());
+        params.put("webhook", paymentOrder.getWebhookUrl());
         params.put("purpose", paymentOrder.getPurpose());
         params.put("send_email", paymentOrder.getSendEmail());
         params.put("send_sms", paymentOrder.getSendSms());
