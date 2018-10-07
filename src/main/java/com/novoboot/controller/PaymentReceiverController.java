@@ -30,9 +30,9 @@ public class PaymentReceiverController {
 	UserService userService;
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/webhookGet" , consumes=MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	private void getResponse(@RequestBody WebHookModel webHookModel) {
-		logger.info("WebHookModel == "+webHookModel.toString());
-		paymentService.inserstPaymentSuccessFull(webHookModel);
+	private void getResponse(@RequestBody String webHookModel) {
+		logger.info("WebHookModel == "+webHookModel);
+//		paymentService.inserstPaymentSuccessFull(webHookModel);
 		
 	}
 	
