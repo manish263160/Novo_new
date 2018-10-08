@@ -151,6 +151,9 @@ public class PaymentDaoImpl extends NovoJdbcTemplate implements PaymentDao {
 		String updateQuery = "update user_booking_details set payment_id= ?, booking_status =? where payment_request_id=?";
 		getJdbcTemplate().update(updateQuery, paymentId,orderStatus,paymentReqstId);
 		
+		String updateQuery1 = "update user_package_booking_details set payment_id= ?, booking_status =? where payment_request_id=?";
+		getJdbcTemplate().update(updateQuery1, paymentId,orderStatus,paymentReqstId);
+		
 	}
 
 	@Override
