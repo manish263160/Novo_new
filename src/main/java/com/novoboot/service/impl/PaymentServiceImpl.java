@@ -152,7 +152,7 @@ public class PaymentServiceImpl implements PaymentService {
 		try {
 			json = new JSONObject(paymentOrder);
 			if (json != null) {
-				String expiredDate = "";
+				StringBuffer expiredDate =new StringBuffer();
 				String name = json.getString("name");
 				String email = json.getString("email");
 				String phone = json.getString("phone");
@@ -286,7 +286,7 @@ public class PaymentServiceImpl implements PaymentService {
 						UserPackageBookingDetails userPackageBookingDetails = new UserPackageBookingDetails(paymnetRequestId, transactionId, 
 								userId, email, name, phone, description, successUrl, failUrl, serviceCatId, serviceMasterId, 
 								serviceCostIdList.toString(), serviceCatName, serviceName, serviceComboPackage.toString(), extraservices.toString(), amount, couponApplied, userAddress, pinCode, city, 
-								null, null, BOOKINGSTATUS.INACTIVE.getBookingStatus(),expiredDate);
+								null, null, BOOKINGSTATUS.INACTIVE.getBookingStatus(),expiredDate !=null?expiredDate.toString() : null);
 						userPackageBookingDetails =paymentDao.insertUserBookingPackage(userPackageBookingDetails);
 						int StoredId= userPackageBookingDetails.getId();
 					}
@@ -301,7 +301,7 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	public static void extracted(JSONArray mainPackages, Map<String, Integer> comboPackage,
-			List<String> serviceCostIdList, String expiredDate, String frombooking) throws JSONException {
+			List<String> serviceCostIdList, StringBuffer expiredDate, String frombooking) throws JSONException {
 		for (int i = 0; i < mainPackages.length(); i++) {
 			JSONObject objectInArray = mainPackages.getJSONObject(i);
 			String[] elementNames = JSONObject.getNames(objectInArray);
@@ -320,6 +320,7 @@ public class PaymentServiceImpl implements PaymentService {
 					serviceCostIdList.add(objectInArray.getString(elementName));
 				}
 				if(frombooking.equals(BASIC_STRINGS.PACKAGE.getStringName()) && elementName.equals("duration")) {
+					if(!objectInArray.getString(elementName).equals("extras")) {
 					Date now= new Date();
 					int duration = 0;
 						duration =Integer.parseInt(objectInArray.getString(elementName).replace(" months", ""));  						
@@ -328,7 +329,9 @@ public class PaymentServiceImpl implements PaymentService {
 				    myCal.setTime(now);   	
 				    myCal.add(Calendar.MONTH, +duration);
 				    now = myCal.getTime();
-					expiredDate = formatter.format(now);
+				    expiredDate.delete(0, expiredDate.length());
+					expiredDate.append(formatter.format(now));
+					}
 				}
 				logger.info("key=" + key + " , value=" + value+" expired date="+expiredDate);
 			}
