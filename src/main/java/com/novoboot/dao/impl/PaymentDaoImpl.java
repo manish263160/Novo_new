@@ -108,7 +108,7 @@ public class PaymentDaoImpl extends NovoJdbcTemplate implements PaymentDao {
 		String query = "INSERT INTO user_package_booking_details (payment_request_id,transaction_id,user_id,consumer_email,package_cat_id,package_master_id,package_cost_id_list,"
 				+ " package_cat_name,package_name,combo_packages,extra_packages,total_amount,coupon_applied,"
 				+ " user_address,pin_code,city,consumer_name,consumer_phone,booking_status,created_on,"
-				+ " created_by ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),?);";
+				+ " created_by ,expired_date ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),? , ?);";
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 			@Override
@@ -136,6 +136,7 @@ public class PaymentDaoImpl extends NovoJdbcTemplate implements PaymentDao {
 				pstmt.setString(index++, userBookingDetails.getConsumerPhone());
 				pstmt.setString(index++, userBookingDetails.getBookingStatus());
 				pstmt.setString(index++, userBookingDetails.getConsumerName());
+				pstmt.setString(index++, userBookingDetails.getExpiredDate());
 				return pstmt;
 			}
 		} , keyHolder);

@@ -1,8 +1,8 @@
 package com.novoboot.service.impl;
 
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -36,6 +36,7 @@ import com.novoboot.wrapper.exception.ConnectionException;
 import com.novoboot.wrapper.exception.InvalidPaymentOrderException;
 import com.novoboot.wrapper.response.CreatePaymentOrderResponse;
 import com.novoboot.wrapper.response.PaymentOrderDetailsResponse;
+import com.novoboot.wrapper.response.PaymentReceiveModel;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
@@ -50,6 +51,8 @@ public class PaymentServiceImpl implements PaymentService {
 
 	@Autowired
 	UserService userService;
+	
+	private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
 	/**
 	 * This method will get the api related details with authtoken
 	 */
@@ -100,7 +103,7 @@ public class PaymentServiceImpl implements PaymentService {
 		String paymentId = webHookModel.getPayment_id();
 		String PaymentReqstId = webHookModel.getPayment_request_id();
 		logger.info("payment Id and paymentRequest id =="+paymentId +" & "+PaymentReqstId);
-		PaymentOrderDetailsResponse paymentOrderDetailsResponse =null;
+		PaymentReceiveModel paymentOrderDetailsResponse =null;
 		try {
 			paymentOrderDetailsResponse = getApi().getPaymentOrderDetails(PaymentReqstId);
 			
@@ -121,10 +124,10 @@ public class PaymentServiceImpl implements PaymentService {
 						webHookModel.setUserId(user.getId());
 					}
 			}
-			Payment[] payment = paymentOrderDetailsResponse.getPayments();
+			String[] payment = paymentOrderDetailsResponse.getPayments();
 			if (paymentOrderDetailsResponse.getId() != null) {
 				// print the status of the payment order.
-				logger.info(paymentOrderDetailsResponse.getStatus());
+				logger.info("payment status==="+paymentOrderDetailsResponse.getStatus());
 				if(payment != null) {
 					paymentDao.updateUserBookingDetails(paymentId,PaymentReqstId,orderStatus);
 				}
@@ -133,7 +136,7 @@ public class PaymentServiceImpl implements PaymentService {
 				logger.error(" order id is invalid.");
 			}
 			webHookModel.setBuyer(paymentOrderDetailsResponse.getEmail());
-			webHookModel.setBuyer_name(paymentOrderDetailsResponse.getName());
+			webHookModel.setBuyer_name(paymentOrderDetailsResponse.getBuyerName());
 		} catch (ConnectionException e) {
 			logger.error(e.toString(), e);
 		}
@@ -149,6 +152,7 @@ public class PaymentServiceImpl implements PaymentService {
 		try {
 			json = new JSONObject(paymentOrder);
 			if (json != null) {
+				String expiredDate = "";
 				String name = json.getString("name");
 				String email = json.getString("email");
 				String phone = json.getString("phone");
@@ -172,8 +176,8 @@ public class PaymentServiceImpl implements PaymentService {
 					if ((frombooking.equals(BASIC_STRINGS.SERVICE.getStringName()) && serviceCatId != 6) || (frombooking.equals(BASIC_STRINGS.PACKAGE.getStringName()) && serviceCatId == 2)) {
 						mainPackages = selectedServices.getJSONArray("mainPackages");
 						extraPackages = selectedServices.getJSONArray("extraPackages");
-						extracted(mainPackages, serviceComboPackage, serviceCostIdList);
-						extracted(extraPackages, extraservices, serviceCostIdList);
+						extracted(mainPackages, serviceComboPackage, serviceCostIdList, expiredDate ,frombooking);
+						extracted(extraPackages, extraservices, serviceCostIdList , expiredDate ,frombooking);
 
 						logger.info("serviceComboPackage===" + serviceComboPackage.toString());
 						logger.info("extraservices===" + extraservices.toString());
@@ -185,7 +189,7 @@ public class PaymentServiceImpl implements PaymentService {
 						}else if(frombooking.equals(BASIC_STRINGS.PACKAGE.getStringName())){
 							mainPackages = selectedServices.getJSONArray("mainPackages");
 						}
-						extracted(mainPackages, serviceComboPackage, serviceCostIdList);
+						extracted(mainPackages, serviceComboPackage, serviceCostIdList , expiredDate,frombooking);
 					}
 				}
 //				logger.info("servicCat==="+cost);
@@ -282,7 +286,7 @@ public class PaymentServiceImpl implements PaymentService {
 						UserPackageBookingDetails userPackageBookingDetails = new UserPackageBookingDetails(paymnetRequestId, transactionId, 
 								userId, email, name, phone, description, successUrl, failUrl, serviceCatId, serviceMasterId, 
 								serviceCostIdList.toString(), serviceCatName, serviceName, serviceComboPackage.toString(), extraservices.toString(), amount, couponApplied, userAddress, pinCode, city, 
-								null, null, BOOKINGSTATUS.INACTIVE.getBookingStatus());
+								null, null, BOOKINGSTATUS.INACTIVE.getBookingStatus(),expiredDate);
 						userPackageBookingDetails =paymentDao.insertUserBookingPackage(userPackageBookingDetails);
 						int StoredId= userPackageBookingDetails.getId();
 					}
@@ -297,7 +301,7 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	public static void extracted(JSONArray mainPackages, Map<String, Integer> comboPackage,
-			List<String> serviceCostIdList) throws JSONException {
+			List<String> serviceCostIdList, String expiredDate, String frombooking) throws JSONException {
 		for (int i = 0; i < mainPackages.length(); i++) {
 			JSONObject objectInArray = mainPackages.getJSONObject(i);
 			String[] elementNames = JSONObject.getNames(objectInArray);
@@ -315,7 +319,18 @@ public class PaymentServiceImpl implements PaymentService {
 				if (elementName.equals("id")) {
 					serviceCostIdList.add(objectInArray.getString(elementName));
 				}
-				logger.info("key=" + key + " , value=" + value);
+				if(frombooking.equals(BASIC_STRINGS.PACKAGE.getStringName()) && elementName.equals("duration")) {
+					Date now= new Date();
+					int duration = 0;
+						duration =Integer.parseInt(objectInArray.getString(elementName).replace(" months", ""));  						
+					logger.info("duration value ="+duration);
+					Calendar myCal = Calendar.getInstance();
+				    myCal.setTime(now);   	
+				    myCal.add(Calendar.MONTH, +duration);
+				    now = myCal.getTime();
+					expiredDate = formatter.format(now);
+				}
+				logger.info("key=" + key + " , value=" + value+" expired date="+expiredDate);
 			}
 			comboPackage.put(key, value);
 		}

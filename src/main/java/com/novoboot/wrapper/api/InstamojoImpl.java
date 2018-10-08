@@ -23,6 +23,7 @@ import com.novoboot.wrapper.response.CreatePaymentOrderResponse;
 import com.novoboot.wrapper.response.CreateRefundResponse;
 import com.novoboot.wrapper.response.PaymentOrderDetailsResponse;
 import com.novoboot.wrapper.response.PaymentOrderListResponse;
+import com.novoboot.wrapper.response.PaymentReceiveModel;
 import com.novoboot.wrapper.util.Constants;
 import com.novoboot.wrapper.util.HttpUtils;
 import com.novoboot.wrapper.util.JsonUtils;
@@ -249,7 +250,7 @@ public class InstamojoImpl implements Instamojo {
      * String)
      */
     @Override
-    public PaymentOrderDetailsResponse getPaymentOrderDetails(String id) throws ConnectionException {
+    public PaymentReceiveModel getPaymentOrderDetails(String id) throws ConnectionException {
         Asserts.notEmpty(id, "Order Id");
 
         Map<String, String> headers = new HashMap<>();
@@ -257,10 +258,11 @@ public class InstamojoImpl implements Instamojo {
 
         try {
             String response = HttpUtils.sendGetRequest(
-                    this.getApiPath(Constants.PAYMENT_ORDER_API_PATH + "id:" + id + "/"), headers,
+                    this.getApiPath(Constants.PAYEMNT_REQUEST /*+ "id:" */+ id + "/"), headers,
                     null);
-            PaymentOrderDetailsResponse paymentOrderDetailsResponse = JsonUtils.convertJsonStringToObject(response,
-                    PaymentOrderDetailsResponse.class);
+            System.out.println("response==="+response);
+            PaymentReceiveModel paymentOrderDetailsResponse = JsonUtils.convertJsonStringToObject(response,
+            		PaymentReceiveModel.class);
 
             paymentOrderDetailsResponse.setJsonResponse(response);
             return paymentOrderDetailsResponse;

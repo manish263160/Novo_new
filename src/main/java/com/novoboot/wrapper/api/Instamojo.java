@@ -10,6 +10,7 @@ import com.novoboot.wrapper.response.CreatePaymentOrderResponse;
 import com.novoboot.wrapper.response.CreateRefundResponse;
 import com.novoboot.wrapper.response.PaymentOrderDetailsResponse;
 import com.novoboot.wrapper.response.PaymentOrderListResponse;
+import com.novoboot.wrapper.response.PaymentReceiveModel;
 
 /**
  * The Interface Instamojo.
@@ -34,7 +35,7 @@ public interface Instamojo {
      * @return the payment order details
      * @throws ConnectionException the connection exception
      */
-    PaymentOrderDetailsResponse getPaymentOrderDetails(String id) throws ConnectionException;
+    PaymentReceiveModel getPaymentOrderDetails(String id) throws ConnectionException;
 
     /**
      * Get the details of the specified order (identified by transaction id).

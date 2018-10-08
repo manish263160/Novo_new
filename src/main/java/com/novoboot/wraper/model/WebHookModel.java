@@ -2,13 +2,25 @@ package com.novoboot.wraper.model;
 
 import java.io.Serializable;
 
-public class WebHookModel implements Serializable {
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+public class WebHookModel implements Serializable {
+	
+	
+
+	/**
+	 * 
+	 */
+	public WebHookModel() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2726696310867003142L;
 	
+	@JsonIgnore
 	private long userId;
 	private String payment_id;
 	private String status;

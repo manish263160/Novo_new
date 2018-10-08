@@ -36,7 +36,7 @@ public class UserPackageBookingDetails extends BaseDto implements Serializable{
 	private String lastBookingDate;
 	private String lastBookingTime;	
 	private String bookingStatus;
-	
+	private String expiredDate;
 	
 	
 	
@@ -45,7 +45,7 @@ public class UserPackageBookingDetails extends BaseDto implements Serializable{
 			String failUrl, long packageCatId, long packageMasterId, String packageCostIdList, String packageCatName,
 			String packageName, String comboPackages, String extraPackages, double totalAmount, String couponApplied,
 			String userAddress, int pinCode, String city, String lastBookingDate, String lastBookingTime,
-			String bookingStatus) {
+			String bookingStatus , String expiredDate) {
 		super();
 		this.paymentRequestId = paymentRequestId;
 		this.transactionId = transactionId;
@@ -71,6 +71,7 @@ public class UserPackageBookingDetails extends BaseDto implements Serializable{
 		this.lastBookingDate = lastBookingDate;
 		this.lastBookingTime = lastBookingTime;
 		this.bookingStatus = bookingStatus;
+		this.expiredDate = expiredDate;
 	}
 	
 	public int getId() {
@@ -230,6 +231,14 @@ public class UserPackageBookingDetails extends BaseDto implements Serializable{
 	public void setBookingStatus(String bookingStatus) {
 		this.bookingStatus = bookingStatus;
 	}
+	public String getExpiredDate() {
+		return expiredDate;
+	}
+
+	public void setExpiredDate(String expiredDate) {
+		this.expiredDate = expiredDate;
+	}
+
 	@Override
 	public String toString() {
 		return "UserPackageBookingDetails [id=" + id + ", paymentRequestId=" + paymentRequestId + ", paymentId="
