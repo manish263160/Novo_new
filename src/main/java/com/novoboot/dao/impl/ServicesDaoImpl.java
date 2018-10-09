@@ -69,8 +69,16 @@ public class ServicesDaoImpl extends NovoJdbcTemplate implements ServicesDao {
 	}
 
 	@Override
-	public List<ServiceModel> getAllServices() {
+	public List<ServiceModel> getAllServices(String searchService) {
+		if(searchService == null)
 		return getJdbcTemplate().query(GET_ALL_SERVICES, new BeanPropertyRowMapper<ServiceModel>(ServiceModel.class), STATUS.ACTIVE.ID);
+		else {
+			String searchQuery = "SELECT * FROM service_master WHERE service_name LIKE ? OR service_desc LIKE ? ";
+			 
+			    List<ServiceModel> list = getJdbcTemplate().query(searchQuery, new BeanPropertyRowMapper<ServiceModel>(ServiceModel.class), "%"+searchService+"%" ,"%"+searchQuery+"5");
+			return list;
+		}
+			
 	}
 
 	@Override

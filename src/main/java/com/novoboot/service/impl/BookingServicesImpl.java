@@ -76,7 +76,7 @@ public class BookingServicesImpl implements BookingService {
 	}
 
 	public List<ServiceModel> getAllServices() {
-		List<ServiceModel> services = servicesDao.getAllServices();
+		List<ServiceModel> services = servicesDao.getAllServices(null);
 		/*if (services != null && services.size() > 0) {
 			for (ServiceModel service : services) {
 				if (CommonEnums.ServiceType.BOOK.type() == service.getServiceType()) {

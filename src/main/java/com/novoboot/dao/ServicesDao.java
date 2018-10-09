@@ -15,7 +15,7 @@ public interface ServicesDao {
 	
 	public List<ServiceModel> getAllServicesByCatId(long categoryId);
 	
-	public List<ServiceModel> getAllServices();
+	public List<ServiceModel> getAllServices(String searchString);
 	
 	public List<ServiceCost> getServicesCostById(long serviceId);
 	
