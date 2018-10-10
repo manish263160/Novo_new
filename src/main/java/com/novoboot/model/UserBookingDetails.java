@@ -1,7 +1,16 @@
 package com.novoboot.model;
 
-public class UserBookingDetails extends BaseDto{
+import java.io.Serializable;
 
+public class UserBookingDetails extends BaseDto implements Serializable{
+
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4054039435442034117L;
+	
+	public UserBookingDetails() {}
 	private int id;
 	private String paymentId;
 	private String paymentRequestId;

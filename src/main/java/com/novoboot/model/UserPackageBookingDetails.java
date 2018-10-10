@@ -9,6 +9,8 @@ public class UserPackageBookingDetails extends BaseDto implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1272392739485204L;
+	
+	public UserPackageBookingDetails() {}
 	private int id;
 	private String paymentRequestId;
 	private String paymentId;
