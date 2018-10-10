@@ -3,6 +3,8 @@ package com.novoboot.service.impl;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,12 @@ public class UserProfileServiceImpl implements UserProfileService {
 	public List<UserPackageBookingDetails> getPreviousPackageBookingService(int userId) {
 		// TODO Auto-generated method stub
 		return userProfileDao.getPreviousPackageBookingService(userId);
+	}
+
+	@Override
+	public boolean updateUserAddress(String fromTable, JSONObject json) throws JSONException{
+		
+		return userProfileDao.updateUserAddress(fromTable, json) ;
 	} 
 
 }
