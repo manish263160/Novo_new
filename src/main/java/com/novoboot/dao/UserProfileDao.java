@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import com.novoboot.model.UserBookingDetails;
 import com.novoboot.model.UserPackageBookingDetails;
+import com.novoboot.model.UserPackageTakenDates;
 
 public interface UserProfileDao {
 
@@ -15,5 +16,17 @@ public interface UserProfileDao {
 	List<UserPackageBookingDetails> getPreviousPackageBookingService(int userId);
 
 	boolean updateUserAddress(String fromTable, JSONObject json) throws JSONException;
+
+	Boolean insertPackageDateSlot(UserPackageBookingDetails request);
+
+	void insertIntoPackageTaken(UserPackageBookingDetails request);
+
+	List<UserPackageTakenDates> getUserPackageTaken(int id);
+
+	Boolean updateUserDetails(long userId, String name, String email);
+
+	UserPackageBookingDetails getPackageDetailsById(String detailFor, int id);
+
+	UserBookingDetails getServiceDetailsById(String detailFor, int id);
 
 }

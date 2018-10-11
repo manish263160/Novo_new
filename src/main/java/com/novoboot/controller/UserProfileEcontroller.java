@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.novoboot.Enums.BASIC_STRINGS;
+import com.novoboot.model.User;
 import com.novoboot.model.UserBookingDetails;
 import com.novoboot.model.UserPackageBookingDetails;
 import com.novoboot.service.UserProfileService;
-
 
 @Controller
 @PreAuthorize("hasRole('USER')")
@@ -61,20 +62,48 @@ public class UserProfileEcontroller {
 		return new ResponseEntity<Boolean>(bool, HttpStatus.OK);
 	}
 
-	/*@RequestMapping(value = "/insertPackageDateSlot/{userID}", method = RequestMethod.POST)
-	public ResponseEntity<Boolean> updateAddress(@RequestBody String request,
-			@PathVariable("service") String fromTable) {
-		logger.info("request==" + request + " fromTable =" + fromTable);
+	@RequestMapping(value = "/insertPackageDateSlot/{userID}", method = RequestMethod.POST)
+	public ResponseEntity<Boolean> insertPackageDateSlot(@RequestBody UserPackageBookingDetails request) {
+		logger.info("request==" + request);
 		Boolean bool = false;
 		try {
-			JSONObject json = new JSONObject(request);
-			bool = userProfileService.updateUserAddress(fromTable, json);
-		} catch (JSONException e) {
+			bool = userProfileService.insertPackageDateSlot(request);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return new ResponseEntity<Boolean>(bool, HttpStatus.OK);
-	}*/
+	}
+
+	@RequestMapping(value = "/updateUserDetails/{userId}", method = RequestMethod.PUT)
+	public ResponseEntity<Boolean> insertPackageDateSlot(@PathVariable("userId") long userId, @RequestBody String request) {
+		
+		Boolean bool = false;
+		try {
+		JSONObject json = new JSONObject(request);
+		if(json != null) {
+				String name = json.getString("name");
+				String email = json.getString("email");
+				logger.info("name==" + name+" email=="+email);
+				bool = userProfileService.updateUserDetails(userId,name,email);
+		}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Boolean>(bool, HttpStatus.OK);
+	}
 
 	
-	
+	@RequestMapping(value = "/getServiceAndPackageDetailsById/{detailFor}/{id}", method = RequestMethod.GET)
+	public ResponseEntity<?> getServiceAndPackageDetailsById(@PathVariable("detailFor") String detailFor,
+			@PathVariable("id") int id) {
+		logger.info("detailFor==" + detailFor + "userId==" + id);
+		if (detailFor.equals(BASIC_STRINGS.SERVICE.getStringName())) {
+			UserBookingDetails bookingDetails = userProfileService.getServiceDetailsById(detailFor,id);
+			return new ResponseEntity<UserBookingDetails>(bookingDetails, HttpStatus.OK);
+		} else if (detailFor.equals(BASIC_STRINGS.PACKAGE.getStringName())) {
+			UserPackageBookingDetails packageBookingDetails = userProfileService.getPackageDetailsById(detailFor,id);
+			return new ResponseEntity<UserPackageBookingDetails>(packageBookingDetails, HttpStatus.OK);
+		}
+		return null;
+	}
 }

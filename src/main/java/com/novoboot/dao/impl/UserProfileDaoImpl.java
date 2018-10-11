@@ -1,18 +1,27 @@
 package com.novoboot.dao.impl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import com.novoboot.Enums.BASIC_STRINGS;
+import com.novoboot.Enums.CommonEnums.STATUS;
 import com.novoboot.dao.UserProfileDao;
 import com.novoboot.jdbcTemplate.NovoJdbcTemplate;
 import com.novoboot.model.UserBookingDetails;
 import com.novoboot.model.UserPackageBookingDetails;
+import com.novoboot.model.UserPackageTakenDates;
 
 @Repository
 public class UserProfileDaoImpl extends NovoJdbcTemplate implements UserProfileDao {
@@ -54,6 +63,72 @@ public class UserProfileDaoImpl extends NovoJdbcTemplate implements UserProfileD
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public Boolean insertPackageDateSlot(UserPackageBookingDetails request) {
+		if (request != null && !StringUtils.isEmpty(request.getLastBookingDate())
+				&& !StringUtils.isEmpty(request.getLastBookingTime())) {
+			String updateQuery = "update user_package_booking_details set last_booking_date = ?,  last_booking_time = ? where id= ? and payment_request_id = ?";
+			int updatestatus = getJdbcTemplate().update(updateQuery, request.getLastBookingDate(),
+					request.getLastBookingTime(), request.getId(), request.getPaymentRequestId());
+			if (updatestatus > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public void insertIntoPackageTaken(UserPackageBookingDetails request) {
+		logger.debug("Start insertIntoPackageTaken");
+		String INSERT_SQL = "INSERT INTO user_package_taken_dates (user_package_booking_id,user_id,booking_date,booking_time,number_of_used) "
+				+ " VALUES(?,?,?,?,? );";
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		getJdbcTemplate().update(new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+				PreparedStatement pstmt = connection.prepareStatement(INSERT_SQL,
+						PreparedStatement.RETURN_GENERATED_KEYS);
+				int index = 1;
+				pstmt.setInt(index++, request.getId());
+				pstmt.setLong(index++, request.getUserId());
+				pstmt.setString(index++, request.getLastBookingDate());
+				pstmt.setString(index++, request.getLastBookingTime());
+				pstmt.setInt(index++, STATUS.ACTIVE.ID);
+				return pstmt;
+			}
+		}, keyHolder);
+	}
+
+	@Override
+	public List<UserPackageTakenDates> getUserPackageTaken(int id) {
+		String query = "select * from user_package_taken_dates where user_package_booking_id = ?";
+		List<UserPackageTakenDates> list= getJdbcTemplate().query(query, new BeanPropertyRowMapper<UserPackageTakenDates>(UserPackageTakenDates.class) , id);
+		return list;
+	}
+
+	@Override
+	public Boolean updateUserDetails(long userId, String name, String email) {
+		String updateQuery = "update user set name = ?,  email = ? where id= ? ";
+		int updatestatus = getJdbcTemplate().update(updateQuery, name , email , userId);
+		if (updatestatus > 0) {
+			return true;
+		}
+		return false;
+	}
+
+
+	@Override
+	public UserBookingDetails getServiceDetailsById(String detailFor, int id) {
+		
+		String query = "select * from user_booking_details where id = ?";
+		return getJdbcTemplate().queryForObject(query, new BeanPropertyRowMapper<UserBookingDetails>(UserBookingDetails.class), id);
+	}
+	@Override
+	public UserPackageBookingDetails getPackageDetailsById(String detailFor, int id) {
+		String query = "select * from user_package_booking_details where id = ?";
+		return getJdbcTemplate().queryForObject(query, new BeanPropertyRowMapper<UserPackageBookingDetails>(UserPackageBookingDetails.class), id);
 	}
 
 }

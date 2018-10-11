@@ -16,4 +16,12 @@ public interface UserProfileService {
 
 	boolean updateUserAddress(String fromTable, JSONObject json) throws JSONException;
 
+	Boolean insertPackageDateSlot(UserPackageBookingDetails request);
+
+	Boolean updateUserDetails(long userId, String name, String email);
+
+	UserPackageBookingDetails getPackageDetailsById(String detailFor, int id);
+
+	UserBookingDetails getServiceDetailsById(String detailFor, int id);
+
 }
