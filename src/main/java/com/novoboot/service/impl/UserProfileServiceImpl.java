@@ -46,8 +46,8 @@ public class UserProfileServiceImpl implements UserProfileService {
 	public Boolean insertPackageDateSlot(UserPackageBookingDetails request) {
 
 		List<UserPackageTakenDates> list = userProfileDao.getUserPackageTaken(request.getId());
-		
-		if (list.isEmpty()) {														// that means there is no entry of this request ID
+
+		if (list.isEmpty()) { // that means there is no entry of this request ID
 			boolean bool = userProfileDao.insertPackageDateSlot(request);
 			if (bool) {
 				userProfileDao.insertIntoPackageTaken(request);
@@ -60,19 +60,22 @@ public class UserProfileServiceImpl implements UserProfileService {
 	@Override
 	public Boolean updateUserDetails(long userId, String name, String email) {
 		// TODO Auto-generated method stub
-		return userProfileDao.updateUserDetails(userId,name, email);
+		return userProfileDao.updateUserDetails(userId, name, email);
 	}
 
 	@Override
 	public UserPackageBookingDetails getPackageDetailsById(String detailFor, int id) {
-		// TODO Auto-generated method stub
 		return userProfileDao.getPackageDetailsById(detailFor, id);
 	}
 
 	@Override
 	public UserBookingDetails getServiceDetailsById(String detailFor, int id) {
-		// TODO Auto-generated method stub
 		return userProfileDao.getServiceDetailsById(detailFor, id);
+	}
+
+	@Override
+	public Boolean updateServiceDates(long userId, UserBookingDetails userBookingDetails) {
+		return userProfileDao.updateServiceDates(userId, userBookingDetails);
 	}
 
 }

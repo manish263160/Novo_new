@@ -29,4 +29,6 @@ public interface UserProfileDao {
 
 	UserBookingDetails getServiceDetailsById(String detailFor, int id);
 
+	Boolean updateServiceDates(long userId, UserBookingDetails userBookingDetails);
+
 }

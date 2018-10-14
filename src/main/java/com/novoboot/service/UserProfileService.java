@@ -24,4 +24,6 @@ public interface UserProfileService {
 
 	UserBookingDetails getServiceDetailsById(String detailFor, int id);
 
+	Boolean updateServiceDates(long userId, UserBookingDetails userBookingDetails);
+
 }

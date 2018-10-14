@@ -66,6 +66,21 @@ public class UserProfileDaoImpl extends NovoJdbcTemplate implements UserProfileD
 	}
 
 	@Override
+	public Boolean updateServiceDates(long userId, UserBookingDetails userBookingDetails) {
+
+		if (userBookingDetails != null && !StringUtils.isEmpty(userBookingDetails.getBookingDate())
+				&& !StringUtils.isEmpty(userBookingDetails.getBookingTime())) {
+			String updateQuery = "update user_booking_details set booking_date = ?,  booking_time = ? where id= ? and payment_request_id = ? and user_id =?";
+			int updatestatus = getJdbcTemplate().update(updateQuery, userBookingDetails.getBookingDate(),
+					userBookingDetails.getBookingTime(), userBookingDetails.getId(), userBookingDetails.getPaymentRequestId() , userId);
+			if (updatestatus > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
 	public Boolean insertPackageDateSlot(UserPackageBookingDetails request) {
 		if (request != null && !StringUtils.isEmpty(request.getLastBookingDate())
 				&& !StringUtils.isEmpty(request.getLastBookingTime())) {
@@ -104,31 +119,34 @@ public class UserProfileDaoImpl extends NovoJdbcTemplate implements UserProfileD
 	@Override
 	public List<UserPackageTakenDates> getUserPackageTaken(int id) {
 		String query = "select * from user_package_taken_dates where user_package_booking_id = ?";
-		List<UserPackageTakenDates> list= getJdbcTemplate().query(query, new BeanPropertyRowMapper<UserPackageTakenDates>(UserPackageTakenDates.class) , id);
+		List<UserPackageTakenDates> list = getJdbcTemplate().query(query,
+				new BeanPropertyRowMapper<UserPackageTakenDates>(UserPackageTakenDates.class), id);
 		return list;
 	}
 
 	@Override
 	public Boolean updateUserDetails(long userId, String name, String email) {
 		String updateQuery = "update user set name = ?,  email = ? where id= ? ";
-		int updatestatus = getJdbcTemplate().update(updateQuery, name , email , userId);
+		int updatestatus = getJdbcTemplate().update(updateQuery, name, email, userId);
 		if (updatestatus > 0) {
 			return true;
 		}
 		return false;
 	}
 
-
 	@Override
 	public UserBookingDetails getServiceDetailsById(String detailFor, int id) {
-		
+
 		String query = "select * from user_booking_details where id = ?";
-		return getJdbcTemplate().queryForObject(query, new BeanPropertyRowMapper<UserBookingDetails>(UserBookingDetails.class), id);
+		return getJdbcTemplate().queryForObject(query,
+				new BeanPropertyRowMapper<UserBookingDetails>(UserBookingDetails.class), id);
 	}
+
 	@Override
 	public UserPackageBookingDetails getPackageDetailsById(String detailFor, int id) {
 		String query = "select * from user_package_booking_details where id = ?";
-		return getJdbcTemplate().queryForObject(query, new BeanPropertyRowMapper<UserPackageBookingDetails>(UserPackageBookingDetails.class), id);
+		return getJdbcTemplate().queryForObject(query,
+				new BeanPropertyRowMapper<UserPackageBookingDetails>(UserPackageBookingDetails.class), id);
 	}
 
 }

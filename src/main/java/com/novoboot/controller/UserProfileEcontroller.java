@@ -61,6 +61,18 @@ public class UserProfileEcontroller {
 		}
 		return new ResponseEntity<Boolean>(bool, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/updateServiceDates/{userId}", method = RequestMethod.PUT)
+	public ResponseEntity<Boolean> updateServiceDates(@PathVariable("userId") long userId, @RequestBody UserBookingDetails userBookingDetails) {
+		logger.info("userBookingDetails==" + userBookingDetails.toString());
+		Boolean bool = false;
+		try {
+			bool = userProfileService.updateServiceDates(userId , userBookingDetails);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Boolean>(bool, HttpStatus.OK);
+	}
 
 	@RequestMapping(value = "/insertPackageDateSlot/{userID}", method = RequestMethod.POST)
 	public ResponseEntity<Boolean> insertPackageDateSlot(@RequestBody UserPackageBookingDetails request) {
