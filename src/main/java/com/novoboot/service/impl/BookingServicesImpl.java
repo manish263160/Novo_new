@@ -305,6 +305,11 @@ public class BookingServicesImpl implements BookingService {
 //		 returnObject.put(newDate, map);
 	}
 
+	@Override
+	public List<ServiceModel> getRecomendedService() {
+		return servicesDao.getRecomendedService();
+	}
+
 	/*
 	 * public static URI appendUri(String uri, String appendQuery) throws
 	 * URISyntaxException { URI oldUri = new URI(uri);

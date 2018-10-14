@@ -62,5 +62,12 @@ public class BookingServiceController {
 				RESPONSE_CODES.SUCCESS.getCode());
 
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/getRecomendedService")
+	public ResponseObject getRecomendedService() {
+		return GenUtilities.getSuccessResponseObject(services.getRecomendedService(), RESPONSE_CODES.SUCCESS.getDescription(),
+				RESPONSE_CODES.SUCCESS.getCode());
+
+	}
 
 }

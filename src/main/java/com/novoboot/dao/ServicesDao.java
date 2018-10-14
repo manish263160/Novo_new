@@ -23,4 +23,6 @@ public interface ServicesDao {
 	
 	public ServiceModel getServiceById(long id);
 
+	public List<ServiceModel> getRecomendedService();
+
 }

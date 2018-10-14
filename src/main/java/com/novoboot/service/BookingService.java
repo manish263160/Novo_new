@@ -28,4 +28,6 @@ public interface BookingService extends Serializable {
 
 	public Map<String, Map<String, Boolean>> getServiceDateTimeSlot(long serviceId);
 
+	public List<ServiceModel> getRecomendedService();
+
 }

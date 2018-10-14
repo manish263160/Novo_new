@@ -125,6 +125,13 @@ public class ServicesDaoImpl extends NovoJdbcTemplate implements ServicesDao {
 		String sql = GET_ALL_SERVICES + " and id = ?";
 		return getJdbcTemplate().queryForObject(sql, new BeanPropertyRowMapper<ServiceModel>(ServiceModel.class), STATUS.ACTIVE.ID, id);
 	}
+
+	@Override
+	public List<ServiceModel> getRecomendedService() {
+		
+		String query ="SELECT * FROM service_master sm INNER JOIN recommended_services rs ON sm.id = rs.service_master_id ";
+		return getJdbcTemplate().query(query, new BeanPropertyRowMapper<ServiceModel>(ServiceModel.class));
+	}
 }
  class ServiceRowMapper implements ResultSetExtractor<List<ServiceCategory>> {
 	
