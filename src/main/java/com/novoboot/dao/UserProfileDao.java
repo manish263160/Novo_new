@@ -31,4 +31,6 @@ public interface UserProfileDao {
 
 	Boolean updateServiceDates(long userId, UserBookingDetails userBookingDetails);
 
+	void updatePackageTaken(UserPackageBookingDetails request);
+
 }

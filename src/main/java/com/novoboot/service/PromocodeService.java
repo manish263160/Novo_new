@@ -11,6 +11,6 @@ import com.novoboot.model.Promocodes;
  */
 public interface PromocodeService {
 
-	Promocodes getPromocodeById(long serviceId);
+	Promocodes getPromocodeById(String coupanCode);
 
 }

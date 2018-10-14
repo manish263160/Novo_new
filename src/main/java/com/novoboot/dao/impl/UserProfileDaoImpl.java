@@ -149,4 +149,11 @@ public class UserProfileDaoImpl extends NovoJdbcTemplate implements UserProfileD
 				new BeanPropertyRowMapper<UserPackageBookingDetails>(UserPackageBookingDetails.class), id);
 	}
 
+	@Override
+	public void updatePackageTaken(UserPackageBookingDetails request) {
+		String updateQuery = "update user_package_taken_dates set booking_date = ?,  booking_time = ? where user_package_booking_id= ? ";
+		getJdbcTemplate().update(updateQuery, request.getLastBookingDate(), request.getLastBookingTime(), request.getId());
+		
+	}
+
 }

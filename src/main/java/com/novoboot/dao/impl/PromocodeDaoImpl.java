@@ -14,10 +14,10 @@ public class PromocodeDaoImpl extends NovoJdbcTemplate implements PromocodeDao  
 	private static final Logger logger = Logger.getLogger(PromocodeDaoImpl.class);
 
 	@Override
-	public Promocodes getPromocodeById(long serviceId) {
+	public Promocodes getPromocodeById(String coupanCode) {
 
-		logger.debug("service id here=="+serviceId);
-		String query = "select * from promocodes where service_master_id = ?";
-		return getJdbcTemplate().queryForObject(query, new BeanPropertyRowMapper<Promocodes>(Promocodes.class), serviceId);
+		logger.debug("coupanCode here=="+coupanCode);
+		String query = "select * from promocodes where promocode = ?";
+		return getJdbcTemplate().queryForObject(query, new BeanPropertyRowMapper<Promocodes>(Promocodes.class), coupanCode);
 	} 
 }

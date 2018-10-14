@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.novoboot.Enums.BASIC_STRINGS;
-import com.novoboot.model.User;
 import com.novoboot.model.UserBookingDetails;
 import com.novoboot.model.UserPackageBookingDetails;
 import com.novoboot.service.UserProfileService;

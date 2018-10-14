@@ -47,12 +47,18 @@ public class UserProfileServiceImpl implements UserProfileService {
 
 		List<UserPackageTakenDates> list = userProfileDao.getUserPackageTaken(request.getId());
 
+		boolean bool = userProfileDao.insertPackageDateSlot(request);
 		if (list.isEmpty()) { // that means there is no entry of this request ID
-			boolean bool = userProfileDao.insertPackageDateSlot(request);
 			if (bool) {
 				userProfileDao.insertIntoPackageTaken(request);
 				return true;
 			}
+		}else {
+			if (bool) {
+				userProfileDao.updatePackageTaken(request);
+				return true;
+			}
+			
 		}
 		return false;
 	}

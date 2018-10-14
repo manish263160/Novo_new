@@ -21,9 +21,9 @@ public class PromoCodesController {
 	@Autowired
 	PromocodeService promocodeService; 
 	
-	@RequestMapping(method = RequestMethod.GET, value ="/forservice/{serviceId}")
-	private ResponseObject getPromocodesForService(@PathVariable long serviceId){
-		return GenUtilities.getSuccessResponseObject(promocodeService.getPromocodeById(serviceId), RESPONSE_CODES.SUCCESS.getDescription(),
+	@RequestMapping(method = RequestMethod.GET, value ="/getCouponValidity/{coupanCode}")
+	private ResponseObject getPromocodesForService(@PathVariable String coupanCode){
+		return GenUtilities.getSuccessResponseObject(promocodeService.getPromocodeById(coupanCode), RESPONSE_CODES.SUCCESS.getDescription(),
 				RESPONSE_CODES.SUCCESS.getCode());
 	}
 

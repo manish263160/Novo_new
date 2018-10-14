@@ -17,8 +17,8 @@ public class PromocodeServiceImpl implements PromocodeService {
 	PromocodeDao promocodeDao;
 
 	@Override
-	public Promocodes getPromocodeById(long serviceId) {
-		return promocodeDao.getPromocodeById(serviceId);
+	public Promocodes getPromocodeById(String coupanCode) {
+		return promocodeDao.getPromocodeById(coupanCode);
 	} 
 
 }
