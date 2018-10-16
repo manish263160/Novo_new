@@ -13,7 +13,7 @@ import com.novoboot.service.PromocodeService;
 import com.novoboot.utils.GenUtilities;
 
 @RestController
-@RequestMapping("/promocodes")
+@RequestMapping("/permitall/promocodes")
 public class PromoCodesController {
 	
 	private static final Logger logger = Logger.getLogger(PromoCodesController.class); 

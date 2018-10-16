@@ -46,7 +46,8 @@ public class UserProfileServiceImpl implements UserProfileService {
 	public Boolean insertPackageDateSlot(UserPackageBookingDetails request) {
 
 		List<UserPackageTakenDates> list = userProfileDao.getUserPackageTaken(request.getId());
-
+			
+		request.setLastBookingTime("23:59:59");
 		boolean bool = userProfileDao.insertPackageDateSlot(request);
 		if (list.isEmpty()) { // that means there is no entry of this request ID
 			if (bool) {
