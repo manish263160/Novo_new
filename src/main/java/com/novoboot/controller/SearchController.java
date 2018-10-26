@@ -27,7 +27,7 @@ public class SearchController {
 	
 	
 	@RequestMapping(value = "/getSearch/{searchString}", method = RequestMethod.GET)
-	public ResponseEntity<List<ServiceModel>> getSearch(@PathVariable("searchString") String searchString) {
+	public ResponseEntity<List<ServiceModel>> getSearch(@PathVariable(value="searchString" , required=false) String searchString) {
 
 		logger.info("searchString === "+searchString);
 		List<ServiceModel> listOfserviceMaster = searchService.getAllService(searchString);

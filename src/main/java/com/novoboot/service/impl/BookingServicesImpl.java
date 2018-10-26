@@ -307,7 +307,8 @@ public class BookingServicesImpl implements BookingService {
 
 	@Override
 	public List<ServiceModel> getRecomendedService() {
-		return servicesDao.getRecomendedService();
+		List<ServiceModel> list = servicesDao.getRecomendedService();
+		return list;
 	}
 
 	/*
