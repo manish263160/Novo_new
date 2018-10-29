@@ -64,8 +64,8 @@ public class PaymentDaoImpl extends NovoJdbcTemplate implements PaymentDao {
 		logger.info("userBookingDetails==="+userBookingDetails.toString());
 		String query = "INSERT INTO user_booking_details (payment_request_id,transaction_id,user_id,consumer_email,service_cat_id,service_master_id,service_cost_id_list,"
 				+ " service_cat_name,service_name,combo_packages,extra_packages,status,total_amount,coupon_applied,"
-				+ " user_address,pin_code,city,booking_date,booking_time,consumer_name,consumer_phone,booking_status,created_on,"
-				+ " created_by ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),?);";
+				+ " user_address,pin_code,city,booking_date,booking_time,consumer_name,consumer_phone,booking_status,payment_mode,created_on,"
+				+ " created_by ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),?);";
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
@@ -94,6 +94,7 @@ public class PaymentDaoImpl extends NovoJdbcTemplate implements PaymentDao {
 				pstmt.setString(index++, userBookingDetails.getConsumerName());
 				pstmt.setString(index++, userBookingDetails.getConsumerPhone());
 				pstmt.setString(index++, userBookingDetails.getBookingStatus());
+				pstmt.setString(index++, userBookingDetails.getPaymentMode());
 				pstmt.setString(index++, userBookingDetails.getConsumerName());
 				return pstmt;
 			}
@@ -108,7 +109,7 @@ public class PaymentDaoImpl extends NovoJdbcTemplate implements PaymentDao {
 		String query = "INSERT INTO user_package_booking_details (payment_request_id,transaction_id,user_id,consumer_email,package_cat_id,package_master_id,package_cost_id_list,"
 				+ " package_cat_name,package_name,combo_packages,extra_packages,total_amount,coupon_applied,"
 				+ " user_address,pin_code,city,consumer_name,consumer_phone,booking_status,created_on,"
-				+ " created_by ,expired_date ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),? , ?);";
+				+ " created_by ,expired_date ,payment_mode ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),? , ? ,?);";
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 			@Override
@@ -137,6 +138,7 @@ public class PaymentDaoImpl extends NovoJdbcTemplate implements PaymentDao {
 				pstmt.setString(index++, userBookingDetails.getBookingStatus());
 				pstmt.setString(index++, userBookingDetails.getConsumerName());
 				pstmt.setString(index++, userBookingDetails.getExpiredDate());
+				pstmt.setString(index++, userBookingDetails.getPaymentMode());
 				return pstmt;
 			}
 		} , keyHolder);

@@ -39,7 +39,7 @@ public class UserBookingDetails extends BaseDto implements Serializable{
 	private String bookingDate;
 	private String bookingTime;	
 	private String bookingStatus;
-	
+	private String paymentMode;
 	/**
 	 * This constructor for create a user booking detail by its field.
 	 * @param transactionId , transaction id that we used on craete payment url
@@ -49,7 +49,7 @@ public class UserBookingDetails extends BaseDto implements Serializable{
 			long serviceMasterId, String serviceCostIdList, String serviceCatName, String serviceName,
 			String comboPackages, String extraPackages, int status, double totalAmount, String couponApplied,
 			String userAddress, int pinCode, String city, String bookingDate, String bookingTime,
-			String bookingStatus) {
+			String bookingStatus ,String paymentMode) {
 		super();
 		this.paymentRequestId = paymentRequestId;
 		this.transactionId = transactionId;
@@ -76,6 +76,7 @@ public class UserBookingDetails extends BaseDto implements Serializable{
 		this.bookingDate = bookingDate;
 		this.bookingTime = bookingTime;
 		this.bookingStatus = bookingStatus;
+		this.paymentMode = paymentMode;
 	}
 	public int getId() {
 		return id;
@@ -241,6 +242,12 @@ public class UserBookingDetails extends BaseDto implements Serializable{
 	public void setTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 	}
+	public String getPaymentMode() {
+		return paymentMode;
+	}
+	public void setPaymentMode(String paymentMode) {
+		this.paymentMode = paymentMode;
+	}
 	@Override
 	public String toString() {
 		return "UserBookingDetails [id=" + id + ", paymentId=" + paymentId + ", paymentRequestId=" + paymentRequestId
@@ -252,8 +259,9 @@ public class UserBookingDetails extends BaseDto implements Serializable{
 				+ comboPackages + ", extraPackages=" + extraPackages + ", status=" + status + ", totalAmount="
 				+ totalAmount + ", couponApplied=" + couponApplied + ", userAddress=" + userAddress + ", pinCode="
 				+ pinCode + ", city=" + city + ", bookingDate=" + bookingDate + ", bookingTime=" + bookingTime
-				+ ", bookingStatus=" + bookingStatus + "]";
+				+ ", bookingStatus=" + bookingStatus + ", paymentMode=" + paymentMode + "]";
 	}
+	
 	
 	
 }

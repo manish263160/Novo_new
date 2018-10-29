@@ -39,7 +39,7 @@ public class UserPackageBookingDetails extends BaseDto implements Serializable{
 	private String lastBookingTime;	
 	private String bookingStatus;
 	private String expiredDate;
-	
+	private String paymentMode;
 	
 	
 	public UserPackageBookingDetails(String paymentRequestId,  String transactionId, long userId,
@@ -47,7 +47,7 @@ public class UserPackageBookingDetails extends BaseDto implements Serializable{
 			String failUrl, long packageCatId, long packageMasterId, String packageCostIdList, String packageCatName,
 			String packageName, String comboPackages, String extraPackages, double totalAmount, String couponApplied,
 			String userAddress, int pinCode, String city, String lastBookingDate, String lastBookingTime,
-			String bookingStatus , String expiredDate) {
+			String bookingStatus , String expiredDate , String paymentMode) {
 		super();
 		this.paymentRequestId = paymentRequestId;
 		this.transactionId = transactionId;
@@ -74,6 +74,7 @@ public class UserPackageBookingDetails extends BaseDto implements Serializable{
 		this.lastBookingTime = lastBookingTime;
 		this.bookingStatus = bookingStatus;
 		this.expiredDate = expiredDate;
+		this.paymentMode = paymentMode;
 	}
 	
 	public int getId() {
@@ -241,6 +242,14 @@ public class UserPackageBookingDetails extends BaseDto implements Serializable{
 		this.expiredDate = expiredDate;
 	}
 
+	public String getPaymentMode() {
+		return paymentMode;
+	}
+
+	public void setPaymentMode(String paymentMode) {
+		this.paymentMode = paymentMode;
+	}
+
 	@Override
 	public String toString() {
 		return "UserPackageBookingDetails [id=" + id + ", paymentRequestId=" + paymentRequestId + ", paymentId="
@@ -252,8 +261,10 @@ public class UserPackageBookingDetails extends BaseDto implements Serializable{
 				+ ", comboPackages=" + comboPackages + ", extraPackages=" + extraPackages + ", totalAmount="
 				+ totalAmount + ", couponApplied=" + couponApplied + ", userAddress=" + userAddress + ", pinCode="
 				+ pinCode + ", city=" + city + ", lastBookingDate=" + lastBookingDate + ", lastBookingTime="
-				+ lastBookingTime + ", bookingStatus=" + bookingStatus + "]";
+				+ lastBookingTime + ", bookingStatus=" + bookingStatus + ", expiredDate=" + expiredDate
+				+ ", paymentMode=" + paymentMode + "]";
 	}
+
 	
 	
 }
