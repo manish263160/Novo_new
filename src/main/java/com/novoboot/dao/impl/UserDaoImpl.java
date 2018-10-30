@@ -132,7 +132,7 @@ public class UserDaoImpl extends NovoJdbcTemplate implements UserDao{
 	@Override
 	public void insertUserRole(long id) {
 		String sql= "insert into user_roles(user_id , role_id) values (?,?)";
-		int updt=getJdbcTemplate().update(sql, new Object[] {id, USER_TYPE.USER.ID});
+		getJdbcTemplate().update(sql, new Object[] {id, USER_TYPE.USER.ID});
 		
 	}
 
@@ -145,6 +145,21 @@ public class UserDaoImpl extends NovoJdbcTemplate implements UserDao{
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public User findById(long id) {
+		String query = "select * from user where id = ?";		
+		User user = null;
+		try {
+			logger.info("query ===" + query);
+			user = getJdbcTemplate().queryForObject(query, new BeanPropertyRowMapper<User>(User.class), id);
+		} catch (EmptyResultDataAccessException e) {
+			logger.error("No user found" + e);
+		} catch (DataAccessException e) {
+			logger.error("Database exception found" + e);
+		}
+		return user;
 	}
 
 }

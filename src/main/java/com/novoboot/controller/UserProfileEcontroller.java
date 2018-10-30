@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.novoboot.Enums.BASIC_STRINGS;
+import com.novoboot.model.User;
 import com.novoboot.model.UserBookingDetails;
 import com.novoboot.model.UserPackageBookingDetails;
 import com.novoboot.service.UserProfileService;
+import com.novoboot.service.UserService;
 
 @Controller
 @PreAuthorize("hasRole('USER')")
@@ -30,6 +32,9 @@ public class UserProfileEcontroller {
 	@Autowired
 	UserProfileService userProfileService;
 
+	@Autowired
+	UserService userService;
+	
 	@RequestMapping(value = "/getPreviousBookingService/{detailFor}/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<?> getPreviousBookingService(@PathVariable("detailFor") String detailFor,
 			@PathVariable("userId") int userId) {
@@ -115,5 +120,11 @@ public class UserProfileEcontroller {
 			return new ResponseEntity<UserPackageBookingDetails>(packageBookingDetails, HttpStatus.OK);
 		}
 		return null;
+	}
+	
+	
+	@RequestMapping(value = "/getUserByUserId/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<User> getUserByUserId(@PathVariable("userId") long userId) {
+		return new ResponseEntity<User>(userService.findById(userId), HttpStatus.OK);
 	}
 }
