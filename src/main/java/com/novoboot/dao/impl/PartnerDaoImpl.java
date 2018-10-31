@@ -20,11 +20,11 @@ public class PartnerDaoImpl extends NovoJdbcTemplate implements PartnerDao {
 	
 	private static final Logger logger = Logger.getLogger(PartnerDaoImpl.class);
 	
-	private static final String ADD_PARTNER = "INSERT INTO partner(partner_name,email,contact_number,city,message,status,created_on,created_by) VALUES (?,?,?,?,?,?,now(),?)";
+	private static final String ADD_PARTNER = "INSERT INTO partner(partner_name,email,contact_number,service_master_id,service_name,status,created_on,created_by) VALUES (?,?,?,?,?,?,now(),?)";
 
 	@Override
 	public void addPartner(Partner partner) {
-		logger.info("PartnerDaoImpl:addPartner() Adding aprtner: " + partner.getEmail());
+		logger.info("PartnerDaoImpl:addPartner() Adding aprtner: " + partner.getPartnerName());
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 			@Override
@@ -34,8 +34,8 @@ public class PartnerDaoImpl extends NovoJdbcTemplate implements PartnerDao {
 				pstmt.setString(index++, partner.getPartnerName());
 				pstmt.setString(index++, partner.getEmail());
 				pstmt.setString(index++, partner.getContactNumber());
-				pstmt.setString(index++, partner.getCity());
-				pstmt.setString(index++, partner.getMessage());
+				pstmt.setLong(index++, partner.getServiceMasterId());
+				pstmt.setString(index++, partner.getServiceName());
 				pstmt.setInt(index++, STATUS.ACTIVE.ID);
 				pstmt.setString(index++, partner.getEmail());
 				return pstmt;
