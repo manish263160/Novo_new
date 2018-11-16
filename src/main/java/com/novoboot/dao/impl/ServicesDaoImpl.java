@@ -129,7 +129,7 @@ public class ServicesDaoImpl extends NovoJdbcTemplate implements ServicesDao {
 	@Override
 	public List<ServiceModel> getRecomendedService() {
 		
-		String query ="SELECT sm.id as id, sm.service_cat_id,sm.service_name , sm.service_cat_id,sm.service_desc,sm.service_type , sm.image_url , sm.status , sm.service_for , sm.created_on , sm.created_by FROM service_master sm INNER JOIN recommended_services rs ON sm.id = rs.service_master_id  ";
+		String query ="SELECT sm.id as id, sm.service_cat_id,sm.service_name , sm.service_cat_id,sm.service_desc,sm.service_type , rs.image_url , sm.status , sm.service_for , sm.created_on , sm.created_by FROM service_master sm INNER JOIN recommended_services rs ON sm.id = rs.service_master_id  ";
 		return getJdbcTemplate().query(query, new BeanPropertyRowMapper<ServiceModel>(ServiceModel.class));
 	}
 }
