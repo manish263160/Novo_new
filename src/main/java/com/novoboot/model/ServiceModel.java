@@ -16,6 +16,7 @@ public class ServiceModel extends BaseDto {
 	private String serviceName;
 	private String serviceDesc;
 	private String imageUrl;
+	private String bwImageUrl;
 	//private int serviceCat; //(1-Home, 0-office) 
 	private int serviceType; //(Enquire-1, Book-0)
 	private int status;
@@ -122,6 +123,12 @@ public class ServiceModel extends BaseDto {
 	}
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
+	}
+	public String getBwImageUrl() {
+		return bwImageUrl;
+	}
+	public void setBwImageUrl(String bwImageUrl) {
+		this.bwImageUrl = bwImageUrl;
 	}
 	
 }
