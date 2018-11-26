@@ -13,6 +13,7 @@ public class PackageCategory implements Serializable {
 	private String packageName;
 	private String scopes;
 	private String ImageUrl;
+	private String packageDesc;
 	private int status;
 	public long getId() {
 		return id;
@@ -43,5 +44,11 @@ public class PackageCategory implements Serializable {
 	}
 	public void setStatus(int status) {
 		this.status = status;
+	}
+	public String getPackageDesc() {
+		return packageDesc;
+	}
+	public void setPackageDesc(String packageDesc) {
+		this.packageDesc = packageDesc;
 	}
 }

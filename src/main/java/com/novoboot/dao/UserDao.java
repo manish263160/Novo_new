@@ -28,7 +28,7 @@ List<String> getUserRoles(Long userId);
 
 void insertUserRole(long id);
 
-boolean insertPotentialCuastomer(String name, String email);
+boolean insertPotentialCuastomer(String name, String phone);
 
 User findById(long id);
 }

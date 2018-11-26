@@ -27,6 +27,6 @@ public interface UserService {
 
 	List<String> getUserRoles(Long userId);
 
-	boolean insertPotentialCuastomer(String name, String email);
+	boolean insertPotentialCuastomer(String name, String phone);
 	
 }

@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import com.novoboot.dao.impl.UserAuthDaoImpl;
 import com.novoboot.model.User;
 import com.novoboot.service.UserAuthService;
 import com.novoboot.service.UserService;
+import com.novoboot.utils.LoginUtils;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
@@ -27,6 +29,9 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserAuthService userAuthService;
 
+	@Autowired
+	LoginUtils loginutils;
+	
 	private BCryptPasswordEncoder bcryptEncoder;
 
 	@Override
@@ -118,8 +123,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean insertPotentialCuastomer(String name, String email) {
-		return userDao.insertPotentialCuastomer(name, email);
+	public boolean insertPotentialCuastomer(String name, String phone) {
+		boolean bool =  userDao.insertPotentialCuastomer(name, phone);
+		if(bool) {
+			ResponseEntity<String> response = loginutils.sendSms(name,phone);
+		}
+		return bool;
 	}
 
 }

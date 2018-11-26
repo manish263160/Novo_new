@@ -137,10 +137,10 @@ public class UserDaoImpl extends NovoJdbcTemplate implements UserDao{
 	}
 
 	@Override
-	public boolean insertPotentialCuastomer(String name, String email) {
+	public boolean insertPotentialCuastomer(String name, String phone) {
 
-		String sql = "insert into potential_customers(name , email) values (?,?)";
-		int updt = getJdbcTemplate().update(sql, new Object[] { name, email });
+		String sql = "insert into potential_customers(name , phone) values (?,?)";
+		int updt = getJdbcTemplate().update(sql, new Object[] { name, phone });
 		if (updt > 0) {
 			return true;
 		}

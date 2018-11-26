@@ -1,16 +1,16 @@
 package com.novoboot.utils;
 
 import java.io.IOException;
-import java.net.URLEncoder;
+import java.util.Arrays;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -19,8 +19,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.novoboot.Enums.OTP_ENUMS;
-import com.novoboot.Enums.RESPONSE_CODES;
-import com.novoboot.model.ResponseObject;
 
 @Component
 public class LoginUtils {
@@ -39,6 +37,9 @@ public class LoginUtils {
 	@Value("${sms.otpVeryfy}")
 	private  String otpVeryfy;
 
+	@Value("${sms.sendSms}")
+	private String sendSms;
+	
 	public  ResponseEntity<String> generateOtp(String mobileNo) {
 
 		String authKey = smsauthkey;
@@ -120,6 +121,44 @@ public class LoginUtils {
 		}
 		
 		return jsonObj;
+	}
+
+	public ResponseEntity<String> sendSms(String name, String phone) {
+		String authKey = smsauthkey;
+		
+		String message = "Dear "+name+", your request for call back has been received. We will get back to you within 24 hours. Thank you for your patience. Regards, Team Novowash";
+		String sender = OTP_ENUMS.SEBDER.getKey();
+		String mobile = phone;
+		String otp_length = OTP_ENUMS.OTP_LENGTH.getKey();
+		String otp_expiry = OTP_ENUMS.OTP_EXPIRY.getKey();
+
+		try {
+			MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
+			map.add("authkey", authKey);
+			map.add("mobile", mobile);
+			map.add("message", message);
+			map.add("sender", sender);
+			map.add("country", "91");
+			map.add("route", "1");
+//			ResponseEntity<String> resp = callThirdPartyRest(sendSms , map);
+			
+//			String URI = sendSms+"?country=91&sender="+sender+"&route=1&authkey="+authKey+"&message="+message+"&mobiles="+mobile;
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+			RestTemplate restTemplate = new RestTemplate();
+			ResponseEntity<String> response = restTemplate.exchange( sendSms,  HttpMethod.GET, request, String.class );
+			logger.info("response objet from otp call=="+ response.toString());
+			return response;
+			/*
+			
+			
+			return response;*/
+//			return resp;
+		} catch (Exception e) {
+			logger.info("Exception on sms sending" + e);
+			return null;
+		}
 	}
 
 
