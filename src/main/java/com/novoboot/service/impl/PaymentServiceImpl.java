@@ -164,7 +164,7 @@ public class PaymentServiceImpl implements PaymentService {
 				String paymentMode = json.getString("paymentMode");
 				List<String> serviceCostIdList = new ArrayList<>();
 
-				JSONObject selectedServices = (JSONObject) json.get("selectedServices");
+				JSONObject selectedServices = json.getJSONObject("selectedServices");
 				Long serviceCatId = ((JSONObject) selectedServices.get("mainService")).getLong("id");
 				String serviceCatName = frombooking.equals(BASIC_STRINGS.SERVICE.getStringName())
 						? ((JSONObject) selectedServices.get("mainService")).getString("catName")
@@ -200,14 +200,14 @@ public class PaymentServiceImpl implements PaymentService {
 				}
 //				logger.info("servicCat==="+cost);
 
-				String couponApplied = selectedServices.getString("couponApplied");
-				Long userId = selectedServices.getLong("userid");
+				String couponApplied = selectedServices.get("couponApplied")+"";
+				Long userId = Long.parseLong(selectedServices.get("userid")+"");
 				JSONObject dateUserDetails = (JSONObject) selectedServices.get("dateUserDetails");
-				String userAddress = dateUserDetails.getString("address");
+				String userAddress = dateUserDetails.get("address").toString();
 				int pinCode = ((JSONObject) dateUserDetails.get("address")).getInt("pincode");
-				String city = dateUserDetails.getString("city");
-				String bookingDate = dateUserDetails.getString("date");
-				String bookingTime = dateUserDetails.getString("time");
+				String city = (String)dateUserDetails.get("city");
+				String bookingDate = dateUserDetails.get("date").toString();
+				String bookingTime = dateUserDetails.get("time").toString();
 				JSONObject contactDetails = (JSONObject) dateUserDetails.get("contactDetails");
 
 				logger.info("request param ::" + paymentOrder.toString());
@@ -360,7 +360,7 @@ public class PaymentServiceImpl implements PaymentService {
 					value = objectInArray.getInt(elementName);
 				}
 				if (elementName.equals("id")) {
-					serviceCostIdList.add(objectInArray.getString(elementName));
+					serviceCostIdList.add(objectInArray.getInt(elementName)+"");
 				}
 				if (frombooking.equals(BASIC_STRINGS.PACKAGE.getStringName()) && elementName.equals("duration")) {
 					if (!objectInArray.getString(elementName).equals("extras")) {

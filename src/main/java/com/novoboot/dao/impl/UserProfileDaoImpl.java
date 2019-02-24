@@ -37,10 +37,10 @@ public class UserProfileDaoImpl extends NovoJdbcTemplate implements UserProfileD
 
 	@Override
 	public List<UserPackageBookingDetails> getPreviousPackageBookingService(int userId) {
-		String query = "select * from user_package_booking_details where user_id = ? and booking_status = ?";
+		String query = "select * from user_package_booking_details where user_id = ? and booking_status = ? OR payment_mode = ?";
 		return getJdbcTemplate().query(query,
 				new BeanPropertyRowMapper<UserPackageBookingDetails>(UserPackageBookingDetails.class), userId,
-				BASIC_STRINGS.COMPLETED.getStringName());
+				BASIC_STRINGS.COMPLETED.getStringName() ,BASIC_STRINGS.CASHON_DELIVERY.getStringName());
 	}
 
 	@Override
